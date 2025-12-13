@@ -43,19 +43,25 @@ const OrderBook = ({ market, onPriceSelect }) => {
     const getDisplayData = () => {
         if (!orderBook) return { asks: [], bids: [] };
 
+        let asks, bids;
+        
         if (selectedOutcome === 'yes') {
-            return {
-                asks: orderBook.asks || [],
-                bids: orderBook.bids || []
-            };
+            asks = [...(orderBook.asks || [])];
+            bids = [...(orderBook.bids || [])];
         } else {
             // No 的 asks = 1 - Yes 的 bids
             // No 的 bids = 1 - Yes 的 asks
-            return {
-                asks: (orderBook.bids || []).map(([price, qty]) => [1 - price, qty]).reverse(),
-                bids: (orderBook.asks || []).map(([price, qty]) => [1 - price, qty]).reverse()
-            };
+            asks = (orderBook.bids || []).map(([price, qty]) => [1 - price, qty]);
+            bids = (orderBook.asks || []).map(([price, qty]) => [1 - price, qty]);
         }
+        
+  
+        asks.sort((a, b) => a[0] - b[0]);
+        
+
+        bids.sort((a, b) => b[0] - a[0]);
+        
+        return { asks, bids };
     };
 
     const displayData = getDisplayData();
