@@ -43,11 +43,15 @@ predict-fun-trading/
 - MetaMask 钱包
 - Predict.fun API Key
 # 安装 Node.js 20.x（LTS 版本）
+
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+
 sudo apt install -y nodejs
 
 # 验证安装
+
 node -v
+
 npm -v
 ### 1. 获取 API Key
 
