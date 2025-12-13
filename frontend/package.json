@@ -13,8 +13,8 @@
     "@predictdotfun/sdk": "^1.2.3",
     "axios": "^1.13.2",
     "ethers": "^6.16.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -28,3 +28,4 @@
     "vite": "^7.2.4"
   }
 }
+
