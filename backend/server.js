@@ -259,9 +259,10 @@ app.post('/api/orders', async (req, res) => {
     res.json(response.data);
   } catch (error) {
     console.error('Error submitting order:', error.response?.data || error.message);
+    const apiError = error.response?.data?.error;
     res.status(error.response?.status || 500).json({
       success: false,
-      error: 'Failed to submit order',
+      error: apiError || 'Failed to submit order',
       message: error.response?.data?.message || error.message
     });
   }
