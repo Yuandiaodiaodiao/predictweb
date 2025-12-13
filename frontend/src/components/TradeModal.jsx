@@ -210,18 +210,20 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
         console.log('SDK Addresses for chainId', chainId, ':', addresses);
 
         // 如果 SDK 没有地址，使用备用地址
-        let CTF_EXCHANGE, NEG_RISK_CTF_EXCHANGE, USDT, CONDITIONAL_TOKENS;
+        let CTF_EXCHANGE, NEG_RISK_CTF_EXCHANGE, USDT, CONDITIONAL_TOKENS, NEG_RISK_ADAPTER;
         
         if (addresses) {
             CTF_EXCHANGE = addresses.CTF_EXCHANGE;
             NEG_RISK_CTF_EXCHANGE = addresses.NEG_RISK_CTF_EXCHANGE;
             USDT = addresses.USDT || addresses.COLLATERAL; // 可能叫 COLLATERAL
             CONDITIONAL_TOKENS = addresses.CONDITIONAL_TOKENS;
+            NEG_RISK_ADAPTER = addresses.NEG_RISK_ADAPTER;
         }
 
         // 打印所有可用的地址键
         if (addresses) {
             console.log('Available address keys:', Object.keys(addresses));
+            console.log('NEG_RISK_ADAPTER:', NEG_RISK_ADAPTER);
         }
 
         if (!CTF_EXCHANGE || !USDT) {
@@ -236,6 +238,7 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
         console.log('  CTF_EXCHANGE:', CTF_EXCHANGE);
         console.log('  NEG_RISK_CTF_EXCHANGE:', NEG_RISK_CTF_EXCHANGE);
         console.log('  CONDITIONAL_TOKENS:', CONDITIONAL_TOKENS);
+        console.log('  NEG_RISK_ADAPTER:', NEG_RISK_ADAPTER);
 
         // ERC20 approve ABI
         const ERC20_ABI = [
@@ -293,6 +296,32 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
             }
         }
 
+        // 2.5 授权 USDT 给 NEG_RISK_ADAPTER (NegRisk 市场必需)
+        if (NEG_RISK_ADAPTER) {
+            try {
+                const allowance3 = await usdtContract.allowance(userAddr, NEG_RISK_ADAPTER);
+                console.log('Current USDT allowance for NEG_RISK_ADAPTER:', allowance3.toString());
+                
+                if (allowance3 < maxAmount / 2n) {
+                    console.log('Approving USDT for NEG_RISK_ADAPTER...');
+                    const tx3 = await usdtContract.approve(NEG_RISK_ADAPTER, maxAmount);
+                    await tx3.wait();
+                    console.log('USDT approved for NEG_RISK_ADAPTER ✓');
+                } else {
+                    console.log('USDT already approved for NEG_RISK_ADAPTER ✓');
+                }
+            } catch (err) {
+                console.error('Error with NEG_RISK_ADAPTER approval:', err);
+                try {
+                    const tx3 = await usdtContract.approve(NEG_RISK_ADAPTER, maxAmount);
+                    await tx3.wait();
+                    console.log('USDT approved for NEG_RISK_ADAPTER ✓');
+                } catch (innerErr) {
+                    console.warn('Could not approve NEG_RISK_ADAPTER:', innerErr.message);
+                }
+            }
+        }
+
         // 3. 授权 ConditionalTokens (ERC1155) - 可选，卖出时需要
         if (CONDITIONAL_TOKENS) {
             try {
@@ -337,6 +366,25 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
                         console.log('ConditionalTokens approved for NEG_RISK_CTF_EXCHANGE ✓');
                     }
                 }
+
+                // NEG_RISK_ADAPTER - 必须授权才能在 NegRisk 市场交易
+                if (NEG_RISK_ADAPTER) {
+                    let isApproved3 = false;
+                    try {
+                        isApproved3 = await ctContract.isApprovedForAll(userAddr, NEG_RISK_ADAPTER);
+                    } catch (checkErr) {
+                        console.log('Could not check NEG_RISK_ADAPTER ERC1155 approval');
+                    }
+
+                    if (!isApproved3) {
+                        console.log('Approving ConditionalTokens for NEG_RISK_ADAPTER...');
+                        const tx5 = await ctContract.setApprovalForAll(NEG_RISK_ADAPTER, true);
+                        await tx5.wait();
+                        console.log('ConditionalTokens approved for NEG_RISK_ADAPTER ✓');
+                    } else {
+                        console.log('ConditionalTokens already approved for NEG_RISK_ADAPTER ✓');
+                    }
+                }
             } catch (err) {
                 // ERC1155 授权失败不是致命错误，买入操作只需要 USDT 授权
                 console.warn('ConditionalTokens approval failed (not critical for buying):', err.message);
@@ -371,9 +419,9 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
 
     const setToBestPrice = (type) => {
         if (type === 'bid' && bestBid) {
-            setPrice(bestBid.toFixed(3));
+            setPrice(bestBid.toFixed(2));
         } else if (type === 'ask' && bestAsk) {
-            setPrice(bestAsk.toFixed(3));
+            setPrice(bestAsk.toFixed(2));
         }
     };
 
@@ -438,11 +486,14 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
             console.log('Token ID:', tokenId);
 
             // 2. 准备价格和数量 (Wei 格式，18 位小数)
-            const priceValue = parseFloat(price);
+            // 价格精度必须是 2 位小数
+            const priceValue = Math.round(parseFloat(price) * 100) / 100;
             const amountValue = parseFloat(amount);
             
+            console.log('Price after rounding to 2 decimals:', priceValue);
+            
             // 转换为 Wei (BigInt)
-            const pricePerShareWei = ethers.parseUnits(priceValue.toFixed(18), 18);
+            const pricePerShareWei = ethers.parseUnits(priceValue.toFixed(2), 18);
             const quantityWei = ethers.parseUnits(amountValue.toFixed(18), 18);
             
             console.log('Price per share (Wei):', pricePerShareWei.toString());
@@ -814,7 +865,7 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
                                 style={styles.priceRefValueBid}
                                 onClick={() => setToBestPrice('bid')}
                             >
-                                {bestBid ? `$${bestBid.toFixed(3)}` : '-'}
+                                {bestBid ? `$${bestBid.toFixed(2)}` : '-'}
                             </span>
                         </div>
                         <div style={styles.priceRefItem}>
@@ -823,7 +874,7 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
                                 style={styles.priceRefValueAsk}
                                 onClick={() => setToBestPrice('ask')}
                             >
-                                {bestAsk ? `$${bestAsk.toFixed(3)}` : '-'}
+                                {bestAsk ? `$${bestAsk.toFixed(2)}` : '-'}
                             </span>
                         </div>
                     </div>
@@ -839,9 +890,9 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
                                 type="number"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
-                                min="0.001"
-                                max="0.999"
-                                step="0.001"
+                                min="0.01"
+                                max="0.99"
+                                step="0.01"
                                 style={styles.input}
                             />
                         </div>
