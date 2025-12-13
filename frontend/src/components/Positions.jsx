@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Wei 转换函数 (10^18) - 全局定义供所有组件使用
+const fromWei = (value) => {
+    if (!value) return 0;
+    const num = typeof value === 'string' ? parseFloat(value) : value;
+    // 如果数值大于 10^15，认为是 Wei 单位
+    if (num > 1e15) {
+        return num / 1e18;
+    }
+    return num;
+};
+
 const Positions = ({ jwtToken, userAddress, onSelectMarket }) => {
     const [positions, setPositions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -45,16 +56,16 @@ const Positions = ({ jwtToken, userAddress, onSelectMarket }) => {
     // 计算总持仓价值
     const calculateTotalValue = () => {
         return positions.reduce((total, pos) => {
-            const value = parseFloat(pos.value || pos.currentValue || 0);
-            return total + value;
+            const rawValue = parseFloat(pos.value || pos.currentValue || 0);
+            return total + fromWei(rawValue);
         }, 0);
     };
 
     // 计算总盈亏
     const calculateTotalPnL = () => {
         return positions.reduce((total, pos) => {
-            const pnl = parseFloat(pos.pnl || pos.unrealizedPnl || 0);
-            return total + pnl;
+            const rawPnl = parseFloat(pos.pnl || pos.unrealizedPnl || 0);
+            return total + fromWei(rawPnl);
         }, 0);
     };
 
@@ -149,6 +160,11 @@ const Positions = ({ jwtToken, userAddress, onSelectMarket }) => {
 
 // 单个持仓卡片
 const PositionCard = ({ position, onSelect }) => {
+    // 安全检查
+    if (!position) {
+        return null;
+    }
+    
     const {
         market,
         outcome,
@@ -158,19 +174,30 @@ const PositionCard = ({ position, onSelect }) => {
         value,
         pnl,
         pnlPercent,
-        marketId,
+        marketId = '',
         tokenId,
         side
-    } = position;
+    } = position || {};
 
-    const displayShares = parseFloat(shares || position.amount || 0);
-    const displayAvgPrice = parseFloat(avgPrice || position.averagePrice || 0);
-    const displayCurrentPrice = parseFloat(currentPrice || position.price || 0);
-    const displayValue = parseFloat(value || position.currentValue || displayShares * displayCurrentPrice);
-    const displayPnL = parseFloat(pnl || position.unrealizedPnl || 0);
-    const displayPnLPercent = parseFloat(pnlPercent || 0);
+    // 使用 fromWei 转换可能是 Wei 格式的数值
+    const rawShares = parseFloat(shares || position.amount || 0) || 0;
+    const displayShares = fromWei(rawShares);
+    
+    const rawAvgPrice = parseFloat(avgPrice || position.averagePrice || 0) || 0;
+    const displayAvgPrice = fromWei(rawAvgPrice);
+    
+    const rawCurrentPrice = parseFloat(currentPrice || position.price || 0) || 0;
+    const displayCurrentPrice = fromWei(rawCurrentPrice);
+    
+    const rawValue = parseFloat(value || position.currentValue || 0) || 0;
+    const displayValue = fromWei(rawValue) || (displayShares * displayCurrentPrice);
+    
+    const rawPnL = parseFloat(pnl || position.unrealizedPnl || 0) || 0;
+    const displayPnL = fromWei(rawPnL);
+    
+    const displayPnLPercent = parseFloat(pnlPercent || 0) || 0;
 
-    const marketTitle = market?.question || market?.title || position.marketTitle || `Market #${marketId}`;
+    const marketTitle = market?.question || market?.title || position.marketTitle || (marketId ? `Market #${marketId}` : '未知市场');
     const outcomeName = outcome?.name || position.outcomeName || (side === 0 ? 'Yes' : 'No');
 
     return (
@@ -181,14 +208,14 @@ const PositionCard = ({ position, onSelect }) => {
             {/* 市场标题 */}
             <div style={styles.positionHeader}>
                 <span style={styles.positionMarket}>
-                    {marketTitle.length > 40 ? marketTitle.slice(0, 40) + '...' : marketTitle}
+                    {marketTitle && marketTitle.length > 40 ? marketTitle.slice(0, 40) + '...' : (marketTitle || '-')}
                 </span>
                 <span style={{
                     ...styles.positionOutcome,
-                    backgroundColor: outcomeName === 'Yes' ? '#e8f5e9' : '#ffebee',
-                    color: outcomeName === 'Yes' ? '#2e7d32' : '#c62828'
+                    backgroundColor: outcomeName === 'Yes' ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)',
+                    color: outcomeName === 'Yes' ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
                 }}>
-                    {outcomeName}
+                    {outcomeName || '-'}
                 </span>
             </div>
 
@@ -215,12 +242,12 @@ const PositionCard = ({ position, onSelect }) => {
             {/* 盈亏 */}
             <div style={{
                 ...styles.positionPnL,
-                backgroundColor: displayPnL >= 0 ? '#e8f5e9' : '#ffebee'
+                backgroundColor: displayPnL >= 0 ? 'rgba(63, 185, 80, 0.1)' : 'rgba(248, 81, 73, 0.1)'
             }}>
                 <span style={styles.pnlLabel}>盈亏</span>
                 <span style={{
                     ...styles.pnlValue,
-                    color: displayPnL >= 0 ? '#2e7d32' : '#c62828'
+                    color: displayPnL >= 0 ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
                 }}>
                     {displayPnL >= 0 ? '+' : ''}{displayPnL.toFixed(2)} 
                     {displayPnLPercent !== 0 && ` (${displayPnLPercent >= 0 ? '+' : ''}${displayPnLPercent.toFixed(1)}%)`}
@@ -232,10 +259,10 @@ const PositionCard = ({ position, onSelect }) => {
 
 const styles = {
     container: {
-        backgroundColor: '#fff',
+        backgroundColor: 'var(--bg-card, #1c2128)',
         borderRadius: '12px',
         padding: '16px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        border: '1px solid var(--border-color, #30363d)'
     },
     header: {
         display: 'flex',
@@ -247,23 +274,24 @@ const styles = {
         margin: 0,
         fontSize: '16px',
         fontWeight: '600',
-        color: '#333'
+        color: 'var(--text-primary, #f0f6fc)'
     },
     refreshBtn: {
         padding: '6px 12px',
-        border: '1px solid #ddd',
+        border: '1px solid var(--border-color, #30363d)',
         borderRadius: '6px',
-        backgroundColor: '#fff',
+        backgroundColor: 'var(--bg-tertiary, #21262d)',
         cursor: 'pointer',
         fontSize: '12px',
-        color: '#666'
+        color: 'var(--text-secondary, #8b949e)',
+        transition: 'all 0.2s'
     },
     summary: {
         display: 'flex',
         justifyContent: 'space-between',
-        padding: '12px',
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
+        padding: '14px',
+        backgroundColor: 'var(--bg-tertiary, #21262d)',
+        borderRadius: '10px',
         marginBottom: '12px'
     },
     summaryItem: {
@@ -272,26 +300,30 @@ const styles = {
     summaryLabel: {
         display: 'block',
         fontSize: '11px',
-        color: '#999',
-        marginBottom: '4px'
+        color: 'var(--text-muted, #6e7681)',
+        marginBottom: '4px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px'
     },
     summaryValue: {
-        fontSize: '14px',
+        fontSize: '15px',
         fontWeight: '600',
-        color: '#333'
+        color: 'var(--text-primary, #f0f6fc)',
+        fontFamily: 'var(--font-mono, monospace)'
     },
     error: {
         padding: '10px 12px',
-        backgroundColor: '#ffebee',
-        color: '#c62828',
+        backgroundColor: 'rgba(248, 81, 73, 0.1)',
+        color: 'var(--accent-red, #f85149)',
         borderRadius: '8px',
         fontSize: '13px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        border: '1px solid rgba(248, 81, 73, 0.3)'
     },
     loading: {
         textAlign: 'center',
         padding: '20px',
-        color: '#999'
+        color: 'var(--text-muted, #6e7681)'
     },
     emptyState: {
         textAlign: 'center',
@@ -305,7 +337,7 @@ const styles = {
     emptyText: {
         margin: 0,
         fontSize: '13px',
-        color: '#999'
+        color: 'var(--text-muted, #6e7681)'
     },
     positionList: {
         display: 'flex',
@@ -313,11 +345,12 @@ const styles = {
         gap: '10px'
     },
     positionCard: {
-        padding: '12px',
-        border: '1px solid #eee',
+        padding: '14px',
+        border: '1px solid var(--border-color, #30363d)',
         borderRadius: '10px',
         cursor: 'pointer',
-        transition: 'all 0.2s'
+        transition: 'all 0.2s',
+        backgroundColor: 'var(--bg-tertiary, #21262d)'
     },
     positionHeader: {
         display: 'flex',
@@ -328,21 +361,25 @@ const styles = {
     positionMarket: {
         fontSize: '13px',
         fontWeight: '500',
-        color: '#333',
+        color: 'var(--text-primary, #f0f6fc)',
         flex: 1,
-        marginRight: '8px'
+        marginRight: '8px',
+        lineHeight: '1.4'
     },
     positionOutcome: {
-        padding: '3px 8px',
-        borderRadius: '4px',
+        padding: '4px 10px',
+        borderRadius: '6px',
         fontSize: '11px',
-        fontWeight: '500'
+        fontWeight: '600'
     },
     positionDetails: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '6px',
-        marginBottom: '10px'
+        gap: '8px',
+        marginBottom: '12px',
+        padding: '10px',
+        backgroundColor: 'var(--bg-secondary, #161b22)',
+        borderRadius: '8px'
     },
     positionRow: {
         display: 'flex',
@@ -350,38 +387,42 @@ const styles = {
         fontSize: '12px'
     },
     positionLabel: {
-        color: '#999'
+        color: 'var(--text-muted, #6e7681)'
     },
     positionValue: {
-        color: '#333',
-        fontWeight: '500'
+        color: 'var(--text-primary, #f0f6fc)',
+        fontWeight: '500',
+        fontFamily: 'var(--font-mono, monospace)'
     },
     positionPnL: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '8px 10px',
-        borderRadius: '6px'
+        padding: '10px 12px',
+        borderRadius: '8px'
     },
     pnlLabel: {
         fontSize: '12px',
-        color: '#666'
+        color: 'var(--text-secondary, #8b949e)'
     },
     pnlValue: {
-        fontSize: '13px',
-        fontWeight: '600'
+        fontSize: '14px',
+        fontWeight: '600',
+        fontFamily: 'var(--font-mono, monospace)'
     },
     showMoreBtn: {
         width: '100%',
         marginTop: '12px',
         padding: '10px',
-        border: '1px solid #ddd',
+        border: '1px solid var(--border-color, #30363d)',
         borderRadius: '8px',
-        backgroundColor: '#fff',
+        backgroundColor: 'var(--bg-tertiary, #21262d)',
         cursor: 'pointer',
         fontSize: '13px',
-        color: '#666'
+        color: 'var(--text-secondary, #8b949e)',
+        transition: 'all 0.2s'
     }
 };
 
 export default Positions;
+
