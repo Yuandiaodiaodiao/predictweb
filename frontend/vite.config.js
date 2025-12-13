@@ -11,7 +11,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     // 允许的域名
-    allowedHosts: ['predict.ubyx.foundation', 'localhost', '127.0.0.1'],
+    allowedHosts: [ 'localhost', '127.0.0.1'],
     proxy: {
       '/api': {
         target: `http://127.0.0.1:${BACKEND_PORT}`,
