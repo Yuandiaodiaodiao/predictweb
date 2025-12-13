@@ -1,7 +1,10 @@
 # Predict.fun Trading App
 
+[English Version](https://github.com/mgcnb666/predictweb/blob/main/README_EN.md)
+
 一个基于 [Predict.fun](https://predict.fun) 预测市场的交易应用，支持查看市场、连接钱包、交易和持仓管理功能。
 
+## ✨ 功能特性
 ## ✨ 功能特性
 
 - 📊 **市场浏览** - 查看所有预测市场及其状态
