@@ -6,6 +6,7 @@ import TradeModal from './components/TradeModal';
 import OrderBook from './components/OrderBook';
 import Positions from './components/Positions';
 import Orders from './components/Orders';
+import ApprovalManager from './components/ApprovalManager';
 import './App.css';
 
 // 使用相对路径，通过 Vite 代理转发到后端（隐藏后端 IP）
@@ -237,7 +238,7 @@ function App() {
           />
         </div>
 
-        {/* Right Sidebar */}
+        {/* Right Sidebar - Order Book */}
         {showOrderBook && (
           <div style={styles.orderBookSection}>
             {/* Order Book */}
@@ -283,6 +284,16 @@ function App() {
                 onSelectMarket={handleMarketSelect}
               />
             </div>
+          </div>
+        )}
+
+        {/* Right Sidebar - Approval Manager */}
+        {showOrderBook && signer && (
+          <div style={styles.approvalSection}>
+            <ApprovalManager 
+              signer={signer}
+              userAddress={userAddress}
+            />
           </div>
         )}
       </div>
@@ -414,6 +425,10 @@ const styles = {
   },
   positionsSection: {
     marginTop: '0'
+  },
+  approvalSection: {
+    width: '320px',
+    flexShrink: 0,
   },
   errorBanner: {
     padding: '14px 18px',
