@@ -126,7 +126,7 @@ function App() {
   };
 
 
-  const REFERRAL_CODE = '5FB80';
+  const REFERRAL_CODE = '';
   
   const setReferralCode = async (token) => {
 
@@ -167,8 +167,12 @@ function App() {
     setIsModalOpen(true);
   };
 
+  // 控制侧边栏显示
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
   const handleMarketSelect = (market) => {
     setSelectedMarket(market);
+    setSidebarVisible(true);
   };
 
   const handlePriceSelect = (price, side) => {
@@ -240,63 +244,67 @@ function App() {
           />
         </div>
 
-        {/* Right Sidebar - Order Book */}
-        {showOrderBook && (
-          <div style={styles.orderBookSection}>
-            {/* Order Book */}
-            <OrderBook 
-              market={selectedMarket}
-              onPriceSelect={handlePriceSelect}
-            />
-            
-            {/* Quick Trade Button */}
-            {selectedMarket && (
-              <button 
+        {/* Right Sidebar - fixed 定位，固定在右侧 */}
+        {showOrderBook && selectedMarket && sidebarVisible && (
+          <div style={styles.sidebarContainer}>
+            {/* 关闭按钮 */}
+            <button
+              onClick={() => setSidebarVisible(false)}
+              style={styles.closeOrderBookBtn}
+              title="关闭面板"
+            >
+              ✕
+            </button>
+
+            {/* 左侧列: OrderBook + Orders + Positions */}
+            <div style={styles.orderBookColumn}>
+              {/* Order Book */}
+              <OrderBook
+                market={selectedMarket}
+                onPriceSelect={handlePriceSelect}
+              />
+
+              {/* Quick Trade Button */}
+              <button
                 onClick={() => setIsModalOpen(true)}
                 style={styles.quickTradeBtn}
               >
                 Trade {selectedMarket.question?.slice(0, 30)}...
               </button>
-            )}
 
-            {/* Orders - 我的挂单 */}
-            <div style={styles.ordersSection}>
-              <Orders 
+              {/* Orders - 我的挂单 */}
+              <Orders
                 jwtToken={jwtToken}
                 userAddress={userAddress}
                 onOrderCancelled={fetchMarkets}
                 onViewMarket={(marketId) => {
-                  // 尝试在本地市场列表中找到该市场
                   const found = markets.find(m => m.id === marketId || m.marketId === marketId);
                   if (found) {
                     setSelectedMarket(found);
                   } else {
-                    // 如果本地没有，打开 Predict.fun 页面
                     window.open(`https://predict.fun/market/${marketId}`, '_blank');
                   }
                 }}
               />
-            </div>
 
-            {/* Positions - 我的持仓 */}
-            <div style={styles.positionsSection}>
-              <Positions 
+              {/* Positions - 我的持仓 */}
+              <Positions
                 jwtToken={jwtToken}
                 userAddress={userAddress}
                 onSelectMarket={handleMarketSelect}
                 signer={signer}
               />
             </div>
-          </div>
-        )}
 
-        {/* Right Sidebar - Approval Manager */}
-        {showOrderBook && signer && (
-          <div style={styles.approvalSection}>
-            <ApprovalManager 
-              signer={signer}
-              userAddress={userAddress}
-            />
+            {/* 右侧列: Approval Manager */}
+            {signer && (
+              <div style={styles.approvalColumn}>
+                <ApprovalManager
+                  signer={signer}
+                  userAddress={userAddress}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -417,22 +425,57 @@ const styles = {
     flex: 1,
     minWidth: 0
   },
-  orderBookSection: {
+  sidebarContainer: {
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    zIndex: 50,
+    display: 'flex',
+    gap: '16px',
+    height: '100vh',
+    maxHeight: '100vh',
+    backgroundColor: 'var(--bg-primary, #0d1117)',
+    boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.4)',
+    padding: '16px',
+    paddingTop: '0'
+  },
+  orderBookColumn: {
     width: '380px',
-    flexShrink: 0,
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px'
+    gap: '16px',
+    height: '100vh',
+    maxHeight: '100vh',
+    overflowY: 'auto',
+    paddingTop: '16px',
+    paddingBottom: '16px'
   },
-  ordersSection: {
-    marginTop: '0'
-  },
-  positionsSection: {
-    marginTop: '0'
-  },
-  approvalSection: {
+  approvalColumn: {
     width: '320px',
     flexShrink: 0,
+    height: '100vh',
+    maxHeight: '100vh',
+    overflowY: 'auto',
+    paddingTop: '16px',
+    paddingBottom: '16px'
+  },
+  closeOrderBookBtn: {
+    position: 'absolute',
+    top: '8px',
+    right: '8px',
+    width: '28px',
+    height: '28px',
+    border: 'none',
+    borderRadius: '50%',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
+    color: 'var(--text-secondary, #8b949e)',
+    fontSize: '14px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    transition: 'all 0.2s'
   },
   errorBanner: {
     padding: '14px 18px',

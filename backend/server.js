@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const compression = require('compression');
+const { HttpsProxyAgent } = require('https-proxy-agent');
+const { HttpProxyAgent } = require('http-proxy-agent');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 // 根据文档使用正确的 API URL
 const API_BASE_URL = process.env.API_BASE_URL || 'https://api-testnet.predict.fun';
 const API_KEY = process.env.PREDICT_API_KEY;
+const PROXY_URL = process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy;
 
 // 允许所有来源
 app.use(cors());
@@ -24,6 +27,14 @@ if (!API_KEY) {
   console.warn('WARNING: PREDICT_API_KEY not set!')
 }
 
+// 创建代理 agent
+let httpAgent, httpsAgent;
+if (PROXY_URL) {
+  httpAgent = new HttpProxyAgent(PROXY_URL);
+  httpsAgent = new HttpsProxyAgent(PROXY_URL);
+  console.log(`Using proxy: ${PROXY_URL}`);
+}
+
 // 创建带有认证头的 axios 实例
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -31,7 +42,9 @@ const apiClient = axios.create({
     'x-api-key': API_KEY,
     'Content-Type': 'application/json'
   },
-  timeout: 30000 // 30秒超时
+  timeout: 30000, // 30秒超时
+  proxy: false, // 禁用 axios 内置代理，使用自定义 agent
+  ...(PROXY_URL && { httpAgent, httpsAgent })
 });
 
 // 获取市场列表 - 使用 /v1/categories 端点
@@ -440,4 +453,5 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
   console.log(`API Base URL: ${API_BASE_URL}`);
   console.log(`API Key configured: ${API_KEY ? 'Yes' : 'No - Please set PREDICT_API_KEY in .env'}`);
+  console.log(`Proxy: ${PROXY_URL || 'Not configured'}`);
 });

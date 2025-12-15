@@ -38,10 +38,15 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                     {markets.map((market) => {
                         const isSelected = selectedMarketId === market.id;
                         return (
-                            <div 
-                                key={market.conditionId || market.id} 
-                                onClick={() => onSelect && onSelect(market)}
-                                style={{ 
+                            <div
+                                key={market.conditionId || market.id}
+                                data-market-card
+                                onClick={() => {
+                                    if (onSelect) {
+                                        onSelect(market);
+                                    }
+                                }}
+                                style={{
                                     ...styles.card,
                                     borderColor: isSelected ? 'var(--accent-blue, #58a6ff)' : 'var(--border-color, #30363d)',
                                     boxShadow: isSelected ? '0 0 20px rgba(88, 166, 255, 0.3)' : 'none'
@@ -106,22 +111,26 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                                 
                                 {/* 按钮 */}
                                 <div style={styles.actions}>
-                                    <button 
+                                    <button
+                                        type="button"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            onSelect && onSelect(market);
+                                            if (onSelect) {
+                                                onSelect(market);
+                                            }
                                         }}
                                         style={{
                                             ...styles.viewBtn,
-                                            backgroundColor: isSelected 
-                                                ? 'var(--accent-blue, #58a6ff)' 
+                                            backgroundColor: isSelected
+                                                ? 'var(--accent-blue, #58a6ff)'
                                                 : 'var(--bg-tertiary, #21262d)',
                                             color: isSelected ? '#fff' : 'var(--text-secondary, #8b949e)'
                                         }}
                                     >
                                         {isSelected ? '✓ 查看中' : '📊 订单簿'}
                                     </button>
-                                    <button 
+                                    <button
+                                        type="button"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             onTrade(market);
