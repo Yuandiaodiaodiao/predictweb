@@ -333,7 +333,9 @@ const styles = {
     borderRadius: '10px',
     border: '1px solid var(--border-color, #30363d)',
     overflow: 'hidden',
-    transition: 'border-color 0.2s'
+    transition: 'border-color 0.2s',
+    minHeight: '60px',
+    flexShrink: 0
   },
   groupHeader: {
     display: 'flex',
