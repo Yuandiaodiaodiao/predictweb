@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const OrderBook = ({ market, onPriceSelect }) => {
@@ -9,6 +9,10 @@ const OrderBook = ({ market, onPriceSelect }) => {
   const [error, setError] = useState(null);
   const [selectedOutcome, setSelectedOutcome] = useState('yes');
 
+  const scrollContainerRef = useRef(null);
+  const spreadRef = useRef(null);
+  const prevMarketIdRef = useRef(null);
+
   useEffect(() => {
     if (market?.id) {
       fetchOrderBook();
@@ -16,6 +20,27 @@ const OrderBook = ({ market, onPriceSelect }) => {
       return () => clearInterval(interval);
     }
   }, [market?.id]);
+
+  // 当市场切换或首次加载数据时，滚动到spread居中
+  useEffect(() => {
+    const isMarketChanged = prevMarketIdRef.current !== market?.id;
+
+    if (orderBook && spreadRef.current && scrollContainerRef.current) {
+      // 只在市场切换时自动滚动，避免每次数据更新都滚动
+      if (isMarketChanged) {
+        setTimeout(() => {
+          if (spreadRef.current && scrollContainerRef.current) {
+            spreadRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }, 100);
+      }
+    }
+
+    prevMarketIdRef.current = market?.id;
+  }, [orderBook, market?.id]);
 
   const fetchOrderBook = async () => {
     if (!market?.id) return;
@@ -50,7 +75,9 @@ const OrderBook = ({ market, onPriceSelect }) => {
       bids = (orderBook.asks || []).map(([price, qty]) => [1 - price, qty]);
     }
 
-    asks.sort((a, b) => a[0] - b[0]);
+    // asks按价格从高到低排序（最低卖价在底部靠近spread）
+    // bids按价格从高到低排序（最高买价在顶部靠近spread）
+    asks.sort((a, b) => b[0] - a[0]);
     bids.sort((a, b) => b[0] - a[0]);
 
     return { asks, bids };
@@ -114,7 +141,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
       )}
 
       {orderBook && (
-        <div style={styles.orderBookContent}>
+        <div ref={scrollContainerRef} style={styles.orderBookContent}>
           {/* 卖单 (Asks) */}
           <div style={styles.section}>
             <div style={styles.sectionHeader}>
@@ -123,7 +150,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
               <span>Total</span>
             </div>
             <div style={styles.asksList}>
-              {displayData.asks.slice(0, 8).reverse().map(([price, qty], idx) => {
+              {displayData.asks.slice(0, 8).map(([price, qty], idx) => {
                 const total = (price * qty).toFixed(2);
                 return (
                   <div
@@ -148,7 +175,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
           </div>
 
           {/* 价差 */}
-          <div style={styles.spread}>
+          <div ref={spreadRef} style={styles.spread}>
             <span>Spread: </span>
             {displayData.asks[0] && displayData.bids[0] && (
               <span style={styles.spreadValue}>
@@ -201,13 +228,19 @@ const styles = {
     backgroundColor: 'var(--bg-card, #1c2128)',
     borderRadius: '12px',
     padding: '16px',
-    border: '1px solid var(--border-color, #30363d)'
+    border: '1px solid var(--border-color, #30363d)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    flexShrink: 0
   },
   title: {
     margin: 0,
@@ -238,7 +271,8 @@ const styles = {
     padding: '10px 12px',
     backgroundColor: 'var(--bg-tertiary, #21262d)',
     borderRadius: '8px',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    flexShrink: 0
   },
   marketTitle: {
     fontSize: '13px',
@@ -247,7 +281,8 @@ const styles = {
   loading: {
     textAlign: 'center',
     padding: '20px',
-    color: 'var(--text-muted, #6e7681)'
+    color: 'var(--text-muted, #6e7681)',
+    flexShrink: 0
   },
   error: {
     textAlign: 'center',
@@ -256,7 +291,8 @@ const styles = {
     color: 'var(--accent-red, #f85149)',
     borderRadius: '8px',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)'
+    border: '1px solid rgba(248, 81, 73, 0.3)',
+    flexShrink: 0
   },
   retryBtn: {
     marginLeft: '8px',
@@ -268,7 +304,12 @@ const styles = {
     cursor: 'pointer',
     fontSize: '12px'
   },
-  orderBookContent: {},
+  orderBookContent: {
+    flex: 1,
+    overflowY: 'auto',
+    scrollBehavior: 'smooth',
+    minHeight: 0
+  },
   section: {
     marginBottom: '4px'
   },
