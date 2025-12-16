@@ -21,6 +21,7 @@ export default function Home() {
   const [jwtToken, setJwtToken] = useState('');
   const [selectedMarket, setSelectedMarket] = useState(null);
   const [accountInfo, setAccountInfo] = useState(null);
+  const [selectedOutcome, setSelectedOutcome] = useState('yes'); // 共享的 outcome 状态
 
   useEffect(() => {
     fetchMarkets();
@@ -221,6 +222,8 @@ export default function Home() {
                 <OrderBook
                   market={selectedMarket}
                   onPriceSelect={() => {}}
+                  selectedOutcome={selectedOutcome}
+                  onOutcomeChange={setSelectedOutcome}
                 />
               </div>
               <div style={styles.tradePanelWrapper}>
@@ -229,6 +232,8 @@ export default function Home() {
                   signer={signer}
                   jwtToken={jwtToken}
                   onTradeSuccess={handleTradeSuccess}
+                  selectedOutcome={selectedOutcome}
+                  onOutcomeChange={setSelectedOutcome}
                 />
               </div>
             </div>

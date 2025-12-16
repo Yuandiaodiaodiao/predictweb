@@ -78,11 +78,20 @@ const ensureBSCNetwork = async () => {
   return true;
 };
 
-const TradePanel = ({ market, signer, jwtToken, onTradeSuccess }) => {
+const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome = 'yes', onOutcomeChange }) => {
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('0.50');
   const [side, setSide] = useState('buy');
-  const [outcomeIndex, setOutcomeIndex] = useState(0);
+
+  // 根据 selectedOutcome prop 计算 outcomeIndex
+  const outcomeIndex = selectedOutcome === 'yes' ? 0 : 1;
+
+  // 处理 outcome 变化
+  const handleOutcomeChange = (idx) => {
+    if (onOutcomeChange) {
+      onOutcomeChange(idx === 0 ? 'yes' : 'no');
+    }
+  };
   const [orderType, setOrderType] = useState('limit');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderBook, setOrderBook] = useState(null);
@@ -533,7 +542,7 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess }) => {
           {(market.outcomes || ['Yes', 'No']).map((outcome, idx) => (
             <button
               key={idx}
-              onClick={() => setOutcomeIndex(idx)}
+              onClick={() => handleOutcomeChange(idx)}
               style={{
                 ...styles.toggleBtn,
                 backgroundColor: outcomeIndex === idx

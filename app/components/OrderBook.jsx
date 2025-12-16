@@ -3,11 +3,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-const OrderBook = ({ market, onPriceSelect }) => {
+const OrderBook = ({ market, onPriceSelect, selectedOutcome = 'yes', onOutcomeChange }) => {
   const [orderBook, setOrderBook] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedOutcome, setSelectedOutcome] = useState('yes');
+
+  // 使用 prop 进行 outcome 切换，回退到本地处理
+  const handleOutcomeChange = (outcome) => {
+    if (onOutcomeChange) {
+      onOutcomeChange(outcome);
+    }
+  };
 
   const scrollContainerRef = useRef(null);
   const spreadRef = useRef(null);
@@ -101,7 +107,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
         <h3 style={styles.title}>Order Book</h3>
         <div style={styles.outcomeToggle}>
           <button
-            onClick={() => setSelectedOutcome('yes')}
+            onClick={() => handleOutcomeChange('yes')}
             style={{
               ...styles.toggleBtn,
               ...(selectedOutcome === 'yes' ? styles.toggleBtnActive : {}),
@@ -112,7 +118,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
             Yes
           </button>
           <button
-            onClick={() => setSelectedOutcome('no')}
+            onClick={() => handleOutcomeChange('no')}
             style={{
               ...styles.toggleBtn,
               ...(selectedOutcome === 'no' ? styles.toggleBtnActive : {}),
