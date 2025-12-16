@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const OrderBook = ({ market, onPriceSelect }) => {
@@ -9,6 +9,10 @@ const OrderBook = ({ market, onPriceSelect }) => {
   const [error, setError] = useState(null);
   const [selectedOutcome, setSelectedOutcome] = useState('yes');
 
+  const scrollContainerRef = useRef(null);
+  const spreadRef = useRef(null);
+  const prevMarketIdRef = useRef(null);
+
   useEffect(() => {
     if (market?.id) {
       fetchOrderBook();
@@ -16,6 +20,27 @@ const OrderBook = ({ market, onPriceSelect }) => {
       return () => clearInterval(interval);
     }
   }, [market?.id]);
+
+  // 当市场切换或首次加载数据时，滚动到spread居中
+  useEffect(() => {
+    const isMarketChanged = prevMarketIdRef.current !== market?.id;
+
+    if (orderBook && spreadRef.current && scrollContainerRef.current) {
+      // 只在市场切换时自动滚动，避免每次数据更新都滚动
+      if (isMarketChanged) {
+        setTimeout(() => {
+          if (spreadRef.current && scrollContainerRef.current) {
+            spreadRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }, 100);
+      }
+    }
+
+    prevMarketIdRef.current = market?.id;
+  }, [orderBook, market?.id]);
 
   const fetchOrderBook = async () => {
     if (!market?.id) return;
@@ -115,7 +140,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
       )}
 
       {orderBook && (
-        <div style={styles.orderBookContent}>
+        <div ref={scrollContainerRef} style={styles.orderBookContent}>
           {/* 卖单 (Asks) */}
           <div style={styles.section}>
             <div style={styles.sectionHeader}>
@@ -149,7 +174,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
           </div>
 
           {/* 价差 */}
-          <div style={styles.spread}>
+          <div ref={spreadRef} style={styles.spread}>
             <span>Spread: </span>
             {displayData.asks[0] && displayData.bids[0] && (
               <span style={styles.spreadValue}>
@@ -269,7 +294,11 @@ const styles = {
     cursor: 'pointer',
     fontSize: '12px'
   },
-  orderBookContent: {},
+  orderBookContent: {
+    maxHeight: '400px',
+    overflowY: 'auto',
+    scrollBehavior: 'smooth'
+  },
   section: {
     marginBottom: '4px'
   },
