@@ -370,8 +370,8 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
         </span>
         <span style={{
           ...styles.positionOutcome,
-          backgroundColor: outcomeName === 'Yes' ? '#e8f5e9' : '#ffebee',
-          color: outcomeName === 'Yes' ? '#2e7d32' : '#c62828'
+          backgroundColor: outcomeName === 'Yes' ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)',
+          color: outcomeName === 'Yes' ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
         }}>
           {outcomeName}
         </span>
@@ -390,12 +390,12 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
 
       <div style={{
         ...styles.positionPnL,
-        backgroundColor: displayPnL >= 0 ? '#e8f5e9' : '#ffebee'
+        backgroundColor: displayPnL >= 0 ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)'
       }}>
         <span style={styles.pnlLabel}>盈亏</span>
         <span style={{
           ...styles.pnlValue,
-          color: displayPnL >= 0 ? '#2e7d32' : '#c62828'
+          color: displayPnL >= 0 ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
         }}>
           {displayPnL >= 0 ? '+' : ''}{displayPnL.toFixed(2)}
           {displayPnLPercent !== 0 && ` (${displayPnLPercent >= 0 ? '+' : ''}${displayPnLPercent.toFixed(1)}%)`}
@@ -420,10 +420,11 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
 
 const styles = {
   container: {
-    backgroundColor: '#fff',
-    borderRadius: '12px',
+    backgroundColor: 'transparent',
     padding: '16px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   },
   header: {
     display: 'flex',
@@ -435,24 +436,26 @@ const styles = {
     margin: 0,
     fontSize: '16px',
     fontWeight: '600',
-    color: '#333'
+    color: 'var(--text-primary, #f0f6fc)'
   },
   refreshBtn: {
-    padding: '6px 12px',
-    border: '1px solid #ddd',
+    padding: '6px 10px',
+    border: '1px solid var(--border-color, #30363d)',
     borderRadius: '6px',
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
+    color: 'var(--text-secondary, #8b949e)',
     cursor: 'pointer',
-    fontSize: '12px',
-    color: '#666'
+    fontSize: '14px',
+    transition: 'all 0.2s'
   },
   summary: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '12px',
-    backgroundColor: '#f8f9fa',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
     borderRadius: '8px',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    flexShrink: 0
   },
   summaryItem: {
     textAlign: 'center'
@@ -460,26 +463,28 @@ const styles = {
   summaryLabel: {
     display: 'block',
     fontSize: '11px',
-    color: '#999',
+    color: 'var(--text-muted, #6e7681)',
     marginBottom: '4px'
   },
   summaryValue: {
     fontSize: '14px',
     fontWeight: '600',
-    color: '#333'
+    color: 'var(--text-primary, #f0f6fc)'
   },
   error: {
     padding: '10px 12px',
-    backgroundColor: '#ffebee',
-    color: '#c62828',
+    backgroundColor: 'rgba(248, 81, 73, 0.1)',
+    color: 'var(--accent-red, #f85149)',
     borderRadius: '8px',
     fontSize: '13px',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    border: '1px solid rgba(248, 81, 73, 0.3)',
+    flexShrink: 0
   },
   loading: {
     textAlign: 'center',
     padding: '20px',
-    color: '#999'
+    color: 'var(--text-muted, #6e7681)'
   },
   emptyState: {
     textAlign: 'center',
@@ -493,17 +498,21 @@ const styles = {
   emptyText: {
     margin: 0,
     fontSize: '13px',
-    color: '#999'
+    color: 'var(--text-muted, #6e7681)'
   },
   positionList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px'
+    gap: '10px',
+    flex: 1,
+    overflowY: 'auto',
+    minHeight: 0
   },
   positionCard: {
     padding: '12px',
-    border: '1px solid #eee',
+    border: '1px solid var(--border-color, #30363d)',
     borderRadius: '10px',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
     cursor: 'pointer',
     transition: 'all 0.2s'
   },
@@ -516,7 +525,7 @@ const styles = {
   positionMarket: {
     fontSize: '13px',
     fontWeight: '500',
-    color: '#333',
+    color: 'var(--text-primary, #f0f6fc)',
     flex: 1,
     marginRight: '8px'
   },
@@ -538,10 +547,10 @@ const styles = {
     fontSize: '12px'
   },
   positionLabel: {
-    color: '#999'
+    color: 'var(--text-muted, #6e7681)'
   },
   positionValue: {
-    color: '#333',
+    color: 'var(--text-primary, #f0f6fc)',
     fontWeight: '500'
   },
   positionPnL: {
@@ -553,7 +562,7 @@ const styles = {
   },
   pnlLabel: {
     fontSize: '12px',
-    color: '#666'
+    color: 'var(--text-secondary, #8b949e)'
   },
   pnlValue: {
     fontSize: '13px',
@@ -563,12 +572,13 @@ const styles = {
     width: '100%',
     marginTop: '12px',
     padding: '10px',
-    border: '1px solid #ddd',
+    border: '1px solid var(--border-color, #30363d)',
     borderRadius: '8px',
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
     cursor: 'pointer',
     fontSize: '13px',
-    color: '#666'
+    color: 'var(--text-secondary, #8b949e)',
+    flexShrink: 0
   },
   redeemBtn: {
     width: '100%',
@@ -576,7 +586,7 @@ const styles = {
     padding: '10px',
     border: 'none',
     borderRadius: '8px',
-    backgroundColor: '#4caf50',
+    backgroundColor: 'var(--accent-green, #3fb950)',
     color: '#fff',
     cursor: 'pointer',
     fontSize: '13px',
