@@ -336,8 +336,16 @@ const ApprovalDropdown = ({ signer, userAddress }) => {
                     <div style={styles.approvalHeader}>
                       <span style={styles.tokenBadge}>{approval.token}</span>
                       <span style={styles.typeBadge}>{approval.type}</span>
+                      <button
+                        onClick={() => window.open(`https://bscscan.com/address/${approval.spenderAddress}`, '_blank')}
+                        style={styles.inspectBtn}
+                        title="在 BSCScan 查看合约"
+                      >
+                        Inspect
+                      </button>
                     </div>
                     <div style={styles.spenderName}>{approval.spender}</div>
+                    <div style={styles.spenderAddress}>{approval.spenderAddress}</div>
                     {approval.type === 'ERC20' && (
                       <div style={styles.allowanceDisplay}>
                         剩余额度: <strong style={styles.allowanceValue}>
@@ -443,7 +451,7 @@ const styles = {
     position: 'absolute',
     top: 'calc(100% + 8px)',
     right: 0,
-    width: '360px',
+    width: '420px',
     backgroundColor: 'var(--bg-secondary, #161b22)',
     border: '1px solid var(--border-color, #30363d)',
     borderRadius: '12px',
@@ -576,6 +584,28 @@ const styles = {
     fontWeight: '500',
     color: 'var(--text-primary, #c9d1d9)',
     marginBottom: '2px',
+  },
+  spenderAddress: {
+    fontSize: '11px',
+    fontFamily: 'monospace',
+    color: 'var(--text-secondary, #8b949e)',
+    wordBreak: 'break-all',
+    marginBottom: '4px',
+    padding: '4px 6px',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: '4px',
+  },
+  inspectBtn: {
+    padding: '2px 8px',
+    border: '1px solid rgba(88, 166, 255, 0.4)',
+    borderRadius: '4px',
+    backgroundColor: 'transparent',
+    color: 'var(--accent-blue, #58a6ff)',
+    cursor: 'pointer',
+    fontSize: '10px',
+    fontWeight: '500',
+    marginLeft: 'auto',
+    transition: 'all 0.2s',
   },
   allowanceDisplay: {
     fontSize: '11px',
