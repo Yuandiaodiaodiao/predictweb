@@ -21,7 +21,7 @@ const loadSDK = async () => {
 
 const BSC_CHAIN_ID = 56;
 
-const Positions = ({ jwtToken, userAddress, onSelectMarket, signer }) => {
+const Positions = ({ jwtToken, userAddress, markets = [], onSelectMarket, signer }) => {
   const [positions, setPositions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -301,6 +301,7 @@ const Positions = ({ jwtToken, userAddress, onSelectMarket, signer }) => {
               <PositionCard
                 key={position.id || index}
                 position={position}
+                markets={markets}
                 onSelect={onSelectMarket}
                 onRedeem={handleRedeem}
                 isRedeeming={redeemingId === (position.id || position.tokenId)}
@@ -332,7 +333,7 @@ const fromWei = (value) => {
   return parseFloat(str);
 };
 
-const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) => {
+const PositionCard = ({ position, markets = [], onSelect, onRedeem, isRedeeming, canRedeem }) => {
   const {
     market,
     outcome,
@@ -345,6 +346,9 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
     side
   } = position;
 
+  // 从 markets 列表中联动查找市场信息
+  const linkedMarket = markets.find(m => m.id === marketId || m.marketId === marketId) || market;
+
   const displayShares = fromWei(shares || position.amount || 0);
   const displayCurrentPrice = position.fetchedPrice || fromWei(currentPrice || position.price || 0);
 
@@ -356,17 +360,45 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
   const displayPnL = fromWei(pnl || position.unrealizedPnl || 0);
   const displayPnLPercent = parseFloat(pnlPercent || 0);
 
-  const marketTitle = market?.question || market?.title || position.marketTitle || `Market #${marketId}`;
-  const outcomeName = outcome?.name || position.outcomeName || (side === 0 ? 'Yes' : 'No');
+  // 优先使用联动的市场数据
+  const marketTitle = linkedMarket?.question || linkedMarket?.title || market?.question || market?.title || position.marketTitle || `市场 #${marketId}`;
+
+  // 获取结果名称，优先使用联动的市场数据
+  const getOutcomeName = () => {
+    if (outcome?.name) return outcome.name;
+    if (position.outcomeName) return position.outcomeName;
+    // 尝试从 linkedMarket 获取 outcomes
+    if (linkedMarket?.outcomes && typeof side === 'number') {
+      return linkedMarket.outcomes[side] || (side === 0 ? 'Yes' : 'No');
+    }
+    if (market?.outcomes && typeof side === 'number') {
+      return market.outcomes[side] || (side === 0 ? 'Yes' : 'No');
+    }
+    return side === 0 ? 'Yes' : 'No';
+  };
+  const outcomeName = getOutcomeName();
+
+  const hasLinkedMarket = linkedMarket && (linkedMarket.id || linkedMarket.marketId);
+
+  const handleClick = () => {
+    if (onSelect && hasLinkedMarket) {
+      onSelect(linkedMarket);
+    } else if (onSelect && marketId) {
+      onSelect({ id: marketId, ...market });
+    }
+  };
 
   return (
     <div
-      style={styles.positionCard}
-      onClick={() => onSelect && onSelect({ id: marketId, ...market })}
+      style={{
+        ...styles.positionCard,
+        cursor: hasLinkedMarket ? 'pointer' : 'default'
+      }}
+      onClick={handleClick}
     >
       <div style={styles.positionHeader}>
         <span style={styles.positionMarket}>
-          {marketTitle.length > 40 ? marketTitle.slice(0, 40) + '...' : marketTitle}
+          {marketTitle.length > 45 ? marketTitle.slice(0, 45) + '...' : marketTitle}
         </span>
         <span style={{
           ...styles.positionOutcome,
@@ -376,6 +408,12 @@ const PositionCard = ({ position, onSelect, onRedeem, isRedeeming, canRedeem }) 
           {outcomeName}
         </span>
       </div>
+
+      {hasLinkedMarket && (
+        <div style={styles.clickHint}>
+          点击查看市场
+        </div>
+      )}
 
       <div style={styles.positionDetails}>
         <div style={styles.positionRow}>
@@ -513,7 +551,6 @@ const styles = {
     border: '1px solid var(--border-color, #30363d)',
     borderRadius: '10px',
     backgroundColor: 'var(--bg-tertiary, #21262d)',
-    cursor: 'pointer',
     transition: 'all 0.2s'
   },
   positionHeader: {
@@ -534,6 +571,12 @@ const styles = {
     borderRadius: '4px',
     fontSize: '11px',
     fontWeight: '500'
+  },
+  clickHint: {
+    fontSize: '10px',
+    color: 'var(--accent-blue, #58a6ff)',
+    marginBottom: '8px',
+    opacity: 0.8
   },
   positionDetails: {
     display: 'grid',

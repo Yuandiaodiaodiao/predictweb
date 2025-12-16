@@ -239,6 +239,7 @@ export default function Home() {
                 jwtToken={jwtToken}
                 userAddress={userAddress}
                 signer={signer}
+                markets={markets}
                 onOrderCancelled={fetchMarkets}
                 onViewMarket={handleViewMarket}
                 onSelectMarket={handleMarketSelect}
