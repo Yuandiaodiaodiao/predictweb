@@ -332,10 +332,11 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
+    backgroundColor: 'transparent',
     padding: '16px',
-    border: '1px solid var(--border-color, #30363d)'
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column'
   },
   header: {
     display: 'flex',
@@ -401,8 +402,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
-    maxHeight: '400px',
-    overflowY: 'auto'
+    flex: 1,
+    overflowY: 'auto',
+    minHeight: 0
   },
   orderCard: {
     padding: '14px',
