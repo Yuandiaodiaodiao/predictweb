@@ -227,13 +227,19 @@ const styles = {
     backgroundColor: 'var(--bg-card, #1c2128)',
     borderRadius: '12px',
     padding: '16px',
-    border: '1px solid var(--border-color, #30363d)'
+    border: '1px solid var(--border-color, #30363d)',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    flexShrink: 0
   },
   title: {
     margin: 0,
@@ -264,7 +270,8 @@ const styles = {
     padding: '10px 12px',
     backgroundColor: 'var(--bg-tertiary, #21262d)',
     borderRadius: '8px',
-    marginBottom: '12px'
+    marginBottom: '12px',
+    flexShrink: 0
   },
   marketTitle: {
     fontSize: '13px',
@@ -273,7 +280,8 @@ const styles = {
   loading: {
     textAlign: 'center',
     padding: '20px',
-    color: 'var(--text-muted, #6e7681)'
+    color: 'var(--text-muted, #6e7681)',
+    flexShrink: 0
   },
   error: {
     textAlign: 'center',
@@ -282,7 +290,8 @@ const styles = {
     color: 'var(--accent-red, #f85149)',
     borderRadius: '8px',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)'
+    border: '1px solid rgba(248, 81, 73, 0.3)',
+    flexShrink: 0
   },
   retryBtn: {
     marginLeft: '8px',
@@ -295,9 +304,10 @@ const styles = {
     fontSize: '12px'
   },
   orderBookContent: {
-    maxHeight: '400px',
+    flex: 1,
     overflowY: 'auto',
-    scrollBehavior: 'smooth'
+    scrollBehavior: 'smooth',
+    minHeight: 0
   },
   section: {
     marginBottom: '4px'
