@@ -234,18 +234,21 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess }) => {
     return { approved: true };
   };
 
-  // 执行授权
+  // 执行授权 - 按需授权，不进行无限授权
   const executeApproval = async (approvalInfo, freshSigner) => {
     setIsApproving(true);
 
     try {
       if (approvalInfo.type === 'usdt') {
         const contract = new ethers.Contract(approvalInfo.tokenAddress, ERC20_ABI, freshSigner);
-        showInfo(`正在授权 ${approvalInfo.tokenName}，请在钱包中确认...`);
-        const tx = await contract.approve(approvalInfo.spenderAddress, ethers.MaxUint256);
+        // 按需授权：使用实际需要的金额而非无限授权
+        const approvalAmount = approvalInfo.requiredAmount;
+        const formattedAmount = ethers.formatUnits(approvalAmount, 18); // BSC USDT 是 18 位小数
+        showInfo(`正在授权 ${parseFloat(formattedAmount).toFixed(2)} ${approvalInfo.tokenName}，请在钱包中确认...`);
+        const tx = await contract.approve(approvalInfo.spenderAddress, approvalAmount);
         showInfo('等待交易确认...');
         await tx.wait();
-        showSuccess(`${approvalInfo.tokenName} 授权成功！`);
+        showSuccess(`${approvalInfo.tokenName} 授权 ${parseFloat(formattedAmount).toFixed(2)} 成功！`);
         setApprovalBanner(null);
         return true;
       } else if (approvalInfo.type === 'token') {
@@ -370,9 +373,15 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess }) => {
 
       if (!approvalCheck.approved) {
         const tokenLabel = approvalCheck.type === 'usdt' ? 'USDT' : 'Conditional Token';
+        // 计算需要授权的具体金额
+        let approvalMessage = `需要授权 ${tokenLabel} 才能${side === 'buy' ? '买入' : '卖出'}`;
+        if (approvalCheck.type === 'usdt' && approvalCheck.requiredAmount) {
+          const formattedRequired = parseFloat(ethers.formatUnits(approvalCheck.requiredAmount, 18)).toFixed(2);
+          approvalMessage = `需要授权 ${formattedRequired} ${tokenLabel} 才能买入`;
+        }
         setApprovalBanner({
           type: approvalCheck.type,
-          message: `需要授权 ${tokenLabel} 才能${side === 'buy' ? '买入' : '卖出'}`,
+          message: approvalMessage,
           approvalInfo: approvalCheck
         });
 
@@ -515,32 +524,7 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess }) => {
         </div>
       )}
 
-      {/* 订单类型 */}
-      <div style={styles.formGroup}>
-        <label style={styles.label}>订单类型</label>
-        <div style={styles.toggleGroup}>
-          <button
-            onClick={() => setOrderType('limit')}
-            style={{
-              ...styles.toggleBtn,
-              backgroundColor: orderType === 'limit' ? 'var(--accent-blue, #58a6ff)' : 'var(--bg-tertiary, #21262d)',
-              color: orderType === 'limit' ? '#fff' : 'var(--text-secondary, #8b949e)'
-            }}
-          >
-            限价单
-          </button>
-          <button
-            onClick={() => setOrderType('market')}
-            style={{
-              ...styles.toggleBtn,
-              backgroundColor: orderType === 'market' ? 'var(--accent-blue, #58a6ff)' : 'var(--bg-tertiary, #21262d)',
-              color: orderType === 'market' ? '#fff' : 'var(--text-secondary, #8b949e)'
-            }}
-          >
-            市价单
-          </button>
-        </div>
-      </div>
+      {/* 订单类型 - 仅支持限价单 */}
 
       {/* 结果选择 */}
       <div style={styles.formGroup}>
