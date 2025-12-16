@@ -341,7 +341,7 @@ const ApprovalDropdown = ({ signer, userAddress }) => {
                         style={styles.inspectBtn}
                         title="在 BSCScan 查看合约"
                       >
-                        Inspect
+                        View in BSCScan
                       </button>
                     </div>
                     <div style={styles.spenderName}>{approval.spender}</div>
