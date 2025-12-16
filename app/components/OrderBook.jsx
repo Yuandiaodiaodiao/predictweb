@@ -231,84 +231,97 @@ const OrderBook = ({ market, onPriceSelect, selectedOutcome = 'yes', onOutcomeCh
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    padding: '16px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '32px',
+    padding: '20px',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     maxHeight: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    boxShadow: '9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5)'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    letterSpacing: '-0.02em'
   },
   outcomeToggle: {
     display: 'flex',
-    gap: '4px'
+    gap: '4px',
+    backgroundColor: '#E0E5EC',
+    padding: '4px',
+    borderRadius: '16px',
+    boxShadow: 'inset 4px 4px 8px rgb(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   toggleBtn: {
-    padding: '6px 12px',
+    padding: '10px 18px',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '12px',
     cursor: 'pointer',
-    fontSize: '12px',
-    fontWeight: '500',
-    transition: 'all 0.2s',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)'
+    fontSize: '13px',
+    fontWeight: '600',
+    transition: 'all 300ms ease-out',
+    backgroundColor: 'transparent',
+    color: '#6B7280',
+    boxShadow: 'none',
+    minHeight: 'auto'
   },
   toggleBtnActive: {
-    backgroundColor: 'var(--accent-blue, #58a6ff)',
-    color: '#fff'
+    backgroundColor: '#6C63FF',
+    color: '#fff',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   marketInfo: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px',
-    flexShrink: 0
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    marginBottom: '16px',
+    flexShrink: 0,
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   marketTitle: {
     fontSize: '13px',
-    color: 'var(--text-secondary, #8b949e)'
+    color: '#5A6570'
   },
   loading: {
     textAlign: 'center',
-    padding: '20px',
-    color: 'var(--text-muted, #6e7681)',
+    padding: '24px',
+    color: '#6B7280',
     flexShrink: 0
   },
   error: {
     textAlign: 'center',
-    padding: '12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '16px',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)',
-    flexShrink: 0
+    flexShrink: 0,
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   retryBtn: {
-    marginLeft: '8px',
-    padding: '4px 8px',
-    border: '1px solid var(--accent-red, #f85149)',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '4px',
+    marginLeft: '10px',
+    padding: '8px 14px',
+    border: 'none',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '12px',
     cursor: 'pointer',
-    fontSize: '12px'
+    fontSize: '12px',
+    fontWeight: '600',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   },
   orderBookContent: {
     flex: 1,
@@ -322,9 +335,9 @@ const styles = {
   sectionHeader: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    padding: '8px 10px',
-    fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
+    padding: '10px 14px',
+    fontSize: '11px',
+    color: '#6B7280',
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: '0.5px'
@@ -340,73 +353,75 @@ const styles = {
   orderRow: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    padding: '8px 10px',
+    padding: '10px 14px',
     fontSize: '13px',
     position: 'relative',
     cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    borderRadius: '4px'
+    transition: 'all 300ms ease-out',
+    borderRadius: '12px',
+    marginBottom: '2px'
   },
   askPrice: {
-    color: 'var(--accent-red, #f85149)',
+    color: '#E53E3E',
     fontWeight: '600',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: "'JetBrains Mono', monospace"
   },
   bidPrice: {
-    color: 'var(--accent-green, #3fb950)',
+    color: '#38B2AC',
     fontWeight: '600',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: "'JetBrains Mono', monospace"
   },
   qty: {
-    color: 'var(--text-secondary, #8b949e)',
+    color: '#5A6570',
     textAlign: 'center',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: "'JetBrains Mono', monospace"
   },
   total: {
-    color: 'var(--text-muted, #6e7681)',
+    color: '#6B7280',
     textAlign: 'right',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: "'JetBrains Mono', monospace"
   },
   depthBar: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    opacity: 0.2,
+    opacity: 0.15,
     zIndex: 0,
-    borderRadius: '4px'
+    borderRadius: '12px'
   },
   askBar: {
     right: 0,
-    backgroundColor: 'var(--accent-red, #f85149)'
+    backgroundColor: '#E53E3E'
   },
   bidBar: {
     right: 0,
-    backgroundColor: 'var(--accent-green, #3fb950)'
+    backgroundColor: '#38B2AC'
   },
   spread: {
     textAlign: 'center',
-    padding: '10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    borderRadius: '6px',
-    margin: '8px 0'
+    padding: '14px',
+    backgroundColor: '#E0E5EC',
+    fontSize: '13px',
+    color: '#5A6570',
+    borderRadius: '16px',
+    margin: '10px 0',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   spreadValue: {
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontWeight: '700',
+    color: '#3D4852',
+    fontFamily: "'JetBrains Mono', monospace"
   },
   timestamp: {
     textAlign: 'center',
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginTop: '10px'
+    color: '#6B7280',
+    marginTop: '12px'
   },
   placeholder: {
     textAlign: 'center',
-    padding: '40px 20px',
-    color: 'var(--text-muted, #6e7681)'
+    padding: '48px 24px',
+    color: '#6B7280'
   }
 };
 

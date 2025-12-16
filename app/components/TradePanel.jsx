@@ -490,8 +490,8 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
         <h3 style={styles.title}>下单</h3>
         <div style={{
           ...styles.sdkBadge,
-          backgroundColor: sdkLoaded ? 'rgba(63, 185, 80, 0.15)' : 'rgba(210, 153, 34, 0.15)',
-          color: sdkLoaded ? 'var(--accent-green, #3fb950)' : 'var(--accent-orange, #d29922)'
+          backgroundColor: '#E0E5EC',
+          color: sdkLoaded ? '#38B2AC' : '#DD6B20'
         }}>
           {sdkLoaded ? 'SDK Ready' : 'Loading...'}
         </div>
@@ -546,9 +546,12 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
               style={{
                 ...styles.toggleBtn,
                 backgroundColor: outcomeIndex === idx
-                  ? (idx === 0 ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)')
-                  : 'var(--bg-tertiary, #21262d)',
-                color: outcomeIndex === idx ? '#fff' : 'var(--text-secondary, #8b949e)'
+                  ? (idx === 0 ? '#38B2AC' : '#E53E3E')
+                  : 'transparent',
+                color: outcomeIndex === idx ? '#fff' : '#6B7280',
+                boxShadow: outcomeIndex === idx
+                  ? '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)'
+                  : 'none'
               }}
             >
               {getOutcomeName(idx)}
@@ -565,8 +568,11 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
             onClick={() => setSide('buy')}
             style={{
               ...styles.toggleBtn,
-              backgroundColor: side === 'buy' ? 'var(--accent-green, #3fb950)' : 'var(--bg-tertiary, #21262d)',
-              color: side === 'buy' ? '#fff' : 'var(--text-secondary, #8b949e)'
+              backgroundColor: side === 'buy' ? '#38B2AC' : 'transparent',
+              color: side === 'buy' ? '#fff' : '#6B7280',
+              boxShadow: side === 'buy'
+                ? '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)'
+                : 'none'
             }}
           >
             买入
@@ -575,8 +581,11 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
             onClick={() => setSide('sell')}
             style={{
               ...styles.toggleBtn,
-              backgroundColor: side === 'sell' ? 'var(--accent-red, #f85149)' : 'var(--bg-tertiary, #21262d)',
-              color: side === 'sell' ? '#fff' : 'var(--text-secondary, #8b949e)'
+              backgroundColor: side === 'sell' ? '#E53E3E' : 'transparent',
+              color: side === 'sell' ? '#fff' : '#6B7280',
+              boxShadow: side === 'sell'
+                ? '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)'
+                : 'none'
             }}
           >
             卖出
@@ -676,7 +685,7 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
         disabled={isSubmitting || isApproving || !jwtToken || !sdkLoaded || !market}
         style={{
           ...styles.submitBtn,
-          backgroundColor: side === 'buy' ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)',
+          backgroundColor: side === 'buy' ? '#38B2AC' : '#E53E3E',
           opacity: (isSubmitting || isApproving || !jwtToken || !sdkLoaded || !market) ? 0.6 : 1
         }}
       >
@@ -688,13 +697,13 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    padding: '16px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '32px',
+    padding: '20px',
     height: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    boxShadow: '9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5)'
   },
   placeholder: {
     flex: 1,
@@ -702,240 +711,262 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '40px 20px'
+    padding: '48px 24px'
   },
   placeholderIcon: {
-    fontSize: '48px',
-    marginBottom: '16px'
+    fontSize: '56px',
+    marginBottom: '20px'
   },
   placeholderText: {
     margin: 0,
-    fontSize: '14px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '15px',
+    color: '#6B7280'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    letterSpacing: '-0.02em'
   },
   sdkBadge: {
-    fontSize: '10px',
-    padding: '4px 8px',
-    borderRadius: '6px',
-    fontWeight: '500'
+    fontSize: '11px',
+    padding: '6px 12px',
+    borderRadius: '9999px',
+    fontWeight: '600',
+    boxShadow: 'inset 3px 3px 6px rgb(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.5)'
   },
   approvalBanner: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    padding: '10px 12px',
-    backgroundColor: 'rgba(210, 153, 34, 0.15)',
-    borderRadius: '8px',
-    marginBottom: '12px',
-    border: '1px solid rgba(210, 153, 34, 0.3)'
+    gap: '12px',
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   approvalIcon: {
-    fontSize: '18px'
+    fontSize: '20px'
   },
   approvalContent: {
     flex: 1
   },
   approvalMessage: {
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: '600',
-    color: 'var(--accent-orange, #d29922)'
+    color: '#DD6B20'
   },
   approvalStatus: {
-    fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginTop: '2px'
+    fontSize: '12px',
+    color: '#6B7280',
+    marginTop: '4px'
   },
   approvalClose: {
-    background: 'none',
+    background: '#E0E5EC',
     border: 'none',
-    fontSize: '16px',
+    fontSize: '18px',
     cursor: 'pointer',
-    color: 'var(--text-muted, #6e7681)',
-    padding: '0 4px'
+    color: '#6B7280',
+    padding: '4px 8px',
+    borderRadius: '8px',
+    boxShadow: '3px 3px 6px rgb(163, 177, 198, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   },
   marketInfo: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px'
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   marketQuestion: {
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    lineHeight: '1.4',
+    fontSize: '13px',
+    color: '#5A6570',
+    lineHeight: '1.5',
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden'
   },
   errorBanner: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
-    fontSize: '12px',
-    marginBottom: '12px',
-    border: '1px solid rgba(248, 81, 73, 0.3)'
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '16px',
+    fontSize: '13px',
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   warningBanner: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(210, 153, 34, 0.1)',
-    color: 'var(--accent-orange, #d29922)',
-    borderRadius: '8px',
-    fontSize: '12px',
-    marginBottom: '12px',
-    border: '1px solid rgba(210, 153, 34, 0.3)'
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#DD6B20',
+    borderRadius: '16px',
+    fontSize: '13px',
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   formGroup: {
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   label: {
     display: 'block',
-    marginBottom: '6px',
-    fontSize: '11px',
-    fontWeight: '500',
-    color: 'var(--text-muted, #6e7681)',
+    marginBottom: '8px',
+    fontSize: '12px',
+    fontWeight: '600',
+    color: '#6B7280',
     textTransform: 'uppercase',
     letterSpacing: '0.5px'
   },
   toggleGroup: {
     display: 'flex',
-    gap: '6px'
+    gap: '8px',
+    backgroundColor: '#E0E5EC',
+    padding: '4px',
+    borderRadius: '16px',
+    boxShadow: 'inset 4px 4px 8px rgb(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   toggleBtn: {
     flex: 1,
-    padding: '8px 12px',
+    padding: '12px 16px',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '12px',
     cursor: 'pointer',
-    fontSize: '12px',
-    fontWeight: '500',
-    transition: 'all 0.2s'
+    fontSize: '13px',
+    fontWeight: '600',
+    transition: 'all 300ms ease-out',
+    minHeight: 'auto',
+    boxShadow: 'none'
   },
   priceReference: {
     display: 'flex',
-    gap: '8px',
-    marginBottom: '12px'
+    gap: '10px',
+    marginBottom: '16px'
   },
   priceRefItem: {
     flex: 1,
-    padding: '8px 10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '6px',
+    padding: '12px 14px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
     textAlign: 'center',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 300ms ease-out',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   priceRefLabel: {
     display: 'block',
-    fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    marginBottom: '2px'
+    fontSize: '11px',
+    color: '#6B7280',
+    marginBottom: '4px',
+    fontWeight: '500'
   },
   priceRefValueBid: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: 'var(--accent-green, #3fb950)',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontSize: '14px',
+    fontWeight: '700',
+    color: '#38B2AC',
+    fontFamily: "'JetBrains Mono', monospace"
   },
   priceRefValueAsk: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: 'var(--accent-red, #f85149)',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontSize: '14px',
+    fontWeight: '700',
+    color: '#E53E3E',
+    fontFamily: "'JetBrains Mono', monospace"
   },
   inputWrapper: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '6px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
     overflow: 'hidden',
-    border: '1px solid var(--border-color, #30363d)'
+    boxShadow: 'inset 6px 6px 10px rgb(163, 177, 198, 0.6), inset -6px -6px 10px rgba(255, 255, 255, 0.5)'
   },
   inputPrefix: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-secondary, #161b22)',
-    color: 'var(--text-muted, #6e7681)',
-    fontSize: '13px',
-    borderRight: '1px solid var(--border-color, #30363d)'
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#6B7280',
+    fontSize: '14px',
+    fontWeight: '600'
   },
   input: {
     flex: 1,
-    padding: '10px 12px',
+    padding: '14px 16px',
     border: 'none',
     backgroundColor: 'transparent',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
-    outline: 'none'
+    color: '#3D4852',
+    fontSize: '14px',
+    outline: 'none',
+    boxShadow: 'none'
   },
   inputFull: {
     width: '100%',
-    padding: '10px 12px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '6px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
+    padding: '14px 16px',
+    border: 'none',
+    borderRadius: '16px',
+    backgroundColor: '#E0E5EC',
+    color: '#3D4852',
+    fontSize: '14px',
     boxSizing: 'border-box',
-    outline: 'none'
+    outline: 'none',
+    boxShadow: 'inset 6px 6px 10px rgb(163, 177, 198, 0.6), inset -6px -6px 10px rgba(255, 255, 255, 0.5)'
   },
   quickBtns: {
     display: 'flex',
-    gap: '4px',
-    marginTop: '6px'
+    gap: '6px',
+    marginTop: '10px'
   },
   quickBtn: {
     flex: 1,
-    padding: '5px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '4px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)',
+    padding: '8px 10px',
+    border: 'none',
+    borderRadius: '12px',
+    backgroundColor: '#E0E5EC',
+    color: '#5A6570',
     cursor: 'pointer',
-    fontSize: '11px',
-    transition: 'all 0.2s'
+    fontSize: '12px',
+    fontWeight: '500',
+    transition: 'all 300ms ease-out',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   },
   estimate: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px'
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   estimateRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    marginBottom: '4px'
+    fontSize: '13px',
+    color: '#5A6570',
+    marginBottom: '6px'
   },
   estimateValue: {
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontWeight: '700',
+    color: '#3D4852',
+    fontFamily: "'JetBrains Mono', monospace"
   },
   submitBtn: {
     width: '100%',
-    padding: '12px',
+    padding: '16px',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: '16px',
     color: '#fff',
     cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '600',
-    transition: 'all 0.2s',
-    marginTop: 'auto'
+    fontSize: '15px',
+    fontWeight: '700',
+    transition: 'all 300ms ease-out',
+    marginTop: 'auto',
+    boxShadow: '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
   }
 };
 

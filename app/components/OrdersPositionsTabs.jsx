@@ -60,43 +60,46 @@ const OrdersPositionsTabs = ({ jwtToken, userAddress, signer, markets = [], onOr
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '32px',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    boxShadow: '9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5)'
   },
   tabHeader: {
     display: 'flex',
-    borderBottom: '1px solid var(--border-color, #30363d)',
-    backgroundColor: 'var(--bg-secondary, #161b22)'
+    backgroundColor: '#E0E5EC',
+    padding: '8px',
+    gap: '4px',
+    boxShadow: '0 4px 6px rgb(163, 177, 198, 0.3)'
   },
   tabBtn: {
     flex: 1,
-    padding: '12px 16px',
+    padding: '14px 20px',
     border: 'none',
     backgroundColor: 'transparent',
-    color: 'var(--text-muted, #6e7681)',
-    fontSize: '13px',
-    fontWeight: '500',
+    color: '#6B7280',
+    fontSize: '14px',
+    fontWeight: '600',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '6px',
-    transition: 'all 0.2s',
-    borderBottom: '2px solid transparent',
-    marginBottom: '-1px'
+    gap: '8px',
+    transition: 'all 300ms ease-out',
+    borderRadius: '16px',
+    boxShadow: 'none',
+    minHeight: 'auto'
   },
   tabBtnActive: {
-    color: 'var(--text-primary, #f0f6fc)',
-    borderBottomColor: 'var(--accent-blue, #58a6ff)',
-    backgroundColor: 'var(--bg-card, #1c2128)'
+    color: '#fff',
+    backgroundColor: '#6C63FF',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   tabIcon: {
-    fontSize: '14px'
+    fontSize: '16px'
   },
   tabContent: {
     flex: 1,

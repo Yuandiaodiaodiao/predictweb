@@ -114,11 +114,11 @@ const Toast = ({ toast, onRemove }) => {
     }
     switch (toast.type) {
       case 'success':
-        return { ...baseStyle, borderLeft: '4px solid #4caf50' };
+        return { ...baseStyle, boxShadow: 'inset 4px 0 0 #38B2AC, 12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6)' };
       case 'error':
-        return { ...baseStyle, borderLeft: '4px solid #f44336' };
+        return { ...baseStyle, boxShadow: 'inset 4px 0 0 #E53E3E, 12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6)' };
       case 'info':
-        return { ...baseStyle, borderLeft: '4px solid #2196f3' };
+        return { ...baseStyle, boxShadow: 'inset 4px 0 0 #4299E1, 12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6)' };
       default:
         return baseStyle;
     }
@@ -136,43 +136,48 @@ const Toast = ({ toast, onRemove }) => {
 const styles = {
   container: {
     position: 'fixed',
-    top: '20px',
-    right: '20px',
+    top: '24px',
+    right: '24px',
     zIndex: 10000,
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
-    maxWidth: '400px',
+    gap: '12px',
+    maxWidth: '420px',
   },
   toast: {
     display: 'flex',
     alignItems: 'center',
-    gap: '12px',
-    padding: '14px 16px',
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+    gap: '14px',
+    padding: '18px 22px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '20px',
+    boxShadow: '12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.6)',
     animation: 'slideIn 0.3s ease-out',
   },
   icon: {
-    fontSize: '18px',
+    fontSize: '20px',
     flexShrink: 0,
   },
   message: {
     flex: 1,
     fontSize: '14px',
-    color: '#333',
-    lineHeight: '1.4',
+    color: '#3D4852',
+    lineHeight: '1.5',
+    fontWeight: '500',
   },
   closeBtn: {
-    background: 'none',
+    background: '#E0E5EC',
     border: 'none',
-    fontSize: '20px',
-    color: '#999',
+    fontSize: '18px',
+    color: '#6B7280',
     cursor: 'pointer',
-    padding: '0',
+    padding: '6px 10px',
     lineHeight: 1,
     flexShrink: 0,
+    borderRadius: '12px',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto',
+    transition: 'all 300ms ease-out',
   },
 };
 

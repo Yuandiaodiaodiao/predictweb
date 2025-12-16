@@ -184,53 +184,56 @@ const styles = {
   networkBadge: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
-    padding: '6px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '20px',
+    gap: '8px',
+    padding: '10px 16px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
     fontSize: '12px',
-    border: '1px solid var(--border-color, #30363d)'
+    fontWeight: '500',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   networkDot: {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    boxShadow: '0 0 6px currentColor'
+    boxShadow: '0 0 8px currentColor'
   },
   networkName: {
-    color: 'var(--text-secondary, #8b949e)'
+    color: '#5A6570'
   },
   address: {
-    padding: '8px 14px',
-    backgroundColor: 'rgba(88, 166, 255, 0.1)',
-    color: 'var(--accent-blue, #58a6ff)',
-    borderRadius: '10px',
+    padding: '10px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#6C63FF',
+    borderRadius: '16px',
     fontSize: '13px',
-    fontFamily: 'var(--font-mono, monospace)',
-    border: '1px solid rgba(88, 166, 255, 0.3)'
+    fontWeight: '600',
+    fontFamily: "'JetBrains Mono', monospace",
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   switchBtn: {
-    padding: '8px 14px',
-    background: 'linear-gradient(135deg, #f0b90b 0%, #f5a623 100%)',
-    color: '#000',
+    padding: '10px 18px',
+    backgroundColor: '#DD6B20',
+    color: '#fff',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: '16px',
     fontSize: '12px',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 300ms ease-out',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   connectBtn: {
-    padding: '12px 24px',
-    background: 'linear-gradient(135deg, #f0b90b 0%, #f5a623 100%)',
-    color: '#000',
+    padding: '14px 28px',
+    backgroundColor: '#6C63FF',
+    color: '#fff',
     border: 'none',
-    borderRadius: '10px',
+    borderRadius: '16px',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
-    boxShadow: '0 4px 15px rgba(240, 185, 11, 0.4)',
-    transition: 'all 0.2s'
+    boxShadow: '8px 8px 16px rgb(163, 177, 198, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.5)',
+    transition: 'all 300ms ease-out'
   }
 };
 

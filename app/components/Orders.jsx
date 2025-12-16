@@ -188,7 +188,7 @@ const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, 
 
   const isBuy = side === 0 || side === 'BUY' || side === 'buy';
   const sideText = isBuy ? '买入' : '卖出';
-  const sideColor = isBuy ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)';
+  const sideColor = isBuy ? '#38B2AC' : '#E53E3E';
 
   const fromWei = (value) => {
     if (!value) return 0;
@@ -306,8 +306,8 @@ const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, 
         </span>
         <span style={{
           ...styles.outcomeBadge,
-          backgroundColor: outcomeName === 'Yes' ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)',
-          color: outcomeName === 'Yes' ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
+          backgroundColor: outcomeName === 'Yes' ? 'rgba(56, 178, 172, 0.15)' : 'rgba(229, 62, 62, 0.15)',
+          color: outcomeName === 'Yes' ? '#38B2AC' : '#E53E3E'
         }}>
           {outcomeName || '-'}
         </span>
@@ -366,7 +366,7 @@ const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, 
 const styles = {
   container: {
     backgroundColor: 'transparent',
-    padding: '16px',
+    padding: '20px',
     height: '100%',
     display: 'flex',
     flexDirection: 'column'
@@ -375,157 +375,169 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    letterSpacing: '-0.02em'
   },
   refreshBtn: {
-    padding: '6px 10px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '6px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)',
+    padding: '10px 16px',
+    border: 'none',
+    borderRadius: '12px',
+    backgroundColor: '#E0E5EC',
+    color: '#5A6570',
     cursor: 'pointer',
     fontSize: '14px',
-    transition: 'all 0.2s'
+    fontWeight: '600',
+    transition: 'all 300ms ease-out',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   },
   countBadge: {
     display: 'inline-block',
-    padding: '4px 12px',
-    backgroundColor: 'rgba(88, 166, 255, 0.15)',
-    color: 'var(--accent-blue, #58a6ff)',
-    borderRadius: '12px',
-    fontSize: '12px',
-    fontWeight: '500',
-    marginBottom: '12px'
+    padding: '8px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#6C63FF',
+    borderRadius: '9999px',
+    fontSize: '13px',
+    fontWeight: '600',
+    marginBottom: '16px',
+    boxShadow: 'inset 4px 4px 8px rgb(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   error: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
+    padding: '14px 16px',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '16px',
     fontSize: '13px',
-    marginBottom: '12px',
-    border: '1px solid rgba(248, 81, 73, 0.3)'
+    marginBottom: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   loading: {
     textAlign: 'center',
-    padding: '20px',
-    color: 'var(--text-muted, #6e7681)'
+    padding: '24px',
+    color: '#6B7280'
   },
   emptyState: {
     textAlign: 'center',
-    padding: '30px 20px'
+    padding: '40px 24px'
   },
   emptyIcon: {
-    fontSize: '32px',
+    fontSize: '40px',
     display: 'block',
-    marginBottom: '8px'
+    marginBottom: '12px'
   },
   emptyText: {
     margin: 0,
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '14px',
+    color: '#6B7280'
   },
   orderList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    gap: '12px',
     flex: 1,
     overflowY: 'auto',
     minHeight: 0
   },
   orderCard: {
-    padding: '14px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)'
+    padding: '18px',
+    borderRadius: '20px',
+    backgroundColor: '#E0E5EC',
+    boxShadow: '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
   },
   orderHeader: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    marginBottom: '10px'
+    gap: '10px',
+    marginBottom: '12px'
   },
   sideBadge: {
-    padding: '4px 12px',
-    borderRadius: '6px',
+    padding: '6px 14px',
+    borderRadius: '10px',
     color: '#fff',
     fontSize: '11px',
-    fontWeight: '600',
-    textTransform: 'uppercase'
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    boxShadow: '2px 2px 4px rgb(163, 177, 198, 0.5)'
   },
   outcomeBadge: {
-    padding: '4px 10px',
-    borderRadius: '6px',
+    padding: '6px 12px',
+    borderRadius: '9999px',
     fontSize: '11px',
-    fontWeight: '600'
+    fontWeight: '600',
+    boxShadow: 'inset 2px 2px 4px rgb(163, 177, 198, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.4)'
   },
   orderTime: {
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginLeft: 'auto'
+    color: '#6B7280',
+    marginLeft: 'auto',
+    fontWeight: '500'
   },
   clickHint: {
-    fontSize: '10px',
-    color: 'var(--accent-blue, #58a6ff)',
-    marginBottom: '8px',
-    opacity: 0.8
+    fontSize: '11px',
+    color: '#6C63FF',
+    marginBottom: '10px',
+    fontWeight: '500'
   },
   orderMarket: {
-    fontSize: '13px',
+    fontSize: '14px',
     fontWeight: '500',
-    color: 'var(--text-primary, #f0f6fc)',
-    marginBottom: '12px',
-    lineHeight: '1.4'
+    color: '#3D4852',
+    marginBottom: '14px',
+    lineHeight: '1.5'
   },
   orderDetails: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '8px',
-    marginBottom: '12px',
-    padding: '10px',
-    backgroundColor: 'var(--bg-secondary, #161b22)',
-    borderRadius: '8px'
+    gap: '10px',
+    marginBottom: '14px',
+    padding: '14px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    boxShadow: 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   detailRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    fontSize: '12px'
+    fontSize: '13px'
   },
   detailLabel: {
-    color: 'var(--text-muted, #6e7681)'
+    color: '#6B7280'
   },
   detailValue: {
-    color: 'var(--text-primary, #f0f6fc)',
-    fontWeight: '500',
-    fontFamily: 'var(--font-mono, monospace)'
+    color: '#3D4852',
+    fontWeight: '600',
+    fontFamily: "'JetBrains Mono', monospace"
   },
   orderHash: {
-    fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    fontFamily: 'var(--font-mono, monospace)',
-    marginBottom: '12px'
+    fontSize: '11px',
+    color: '#6B7280',
+    fontFamily: "'JetBrains Mono', monospace",
+    marginBottom: '14px'
   },
   orderActions: {
     display: 'flex',
-    gap: '8px'
+    gap: '10px'
   },
   cancelBtn: {
     width: '100%',
-    padding: '8px 12px',
-    border: '1px solid var(--accent-red, #f85149)',
-    borderRadius: '6px',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-red, #f85149)',
-    fontSize: '12px',
-    fontWeight: '500',
+    padding: '12px 16px',
+    border: 'none',
+    borderRadius: '12px',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    fontSize: '13px',
+    fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 300ms ease-out',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   }
 };
 

@@ -260,7 +260,7 @@ export default function Home() {
 const styles = {
   app: {
     height: '100vh',
-    backgroundColor: 'var(--bg-primary, #0d1117)',
+    backgroundColor: '#E0E5EC',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden'
@@ -269,9 +269,9 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '12px 20px',
-    backgroundColor: 'var(--bg-secondary, #161b22)',
-    borderBottom: '1px solid var(--border-color, #30363d)',
+    padding: '16px 24px',
+    backgroundColor: '#E0E5EC',
+    boxShadow: '0 4px 6px rgb(163, 177, 198, 0.3), 0 -2px 4px rgba(255, 255, 255, 0.4)',
     zIndex: 100,
     flexShrink: 0
   },
@@ -282,12 +282,11 @@ const styles = {
   },
   logo: {
     margin: 0,
-    fontSize: '20px',
-    fontWeight: '700',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text'
+    fontSize: '22px',
+    fontWeight: '800',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#6C63FF',
+    letterSpacing: '-0.02em'
   },
   headerRight: {
     display: 'flex',
@@ -300,29 +299,29 @@ const styles = {
     gap: '10px'
   },
   accountName: {
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
+    fontSize: '13px',
+    color: '#5A6570',
     fontWeight: '500'
   },
   referralBadge: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
-    padding: '6px 10px',
-    backgroundColor: 'rgba(163, 113, 247, 0.1)',
-    borderRadius: '8px',
-    border: '1px solid rgba(163, 113, 247, 0.3)'
+    padding: '8px 14px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '16px',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)'
   },
   referralLabel: {
     fontSize: '11px',
-    color: 'var(--accent-purple, #a371f7)'
+    color: '#6C63FF'
   },
   referralCode: {
     fontSize: '12px',
     fontWeight: '700',
-    color: 'var(--accent-purple, #a371f7)',
+    color: '#6C63FF',
     cursor: 'pointer',
-    fontFamily: 'var(--font-mono, monospace)',
+    fontFamily: "'JetBrains Mono', monospace",
     letterSpacing: '0.5px'
   },
   authStatus: {
@@ -330,17 +329,18 @@ const styles = {
     alignItems: 'center',
     gap: '4px',
     fontSize: '11px',
-    color: 'var(--accent-green, #3fb950)',
-    fontWeight: '500',
-    padding: '5px 10px',
-    backgroundColor: 'rgba(63, 185, 80, 0.1)',
-    borderRadius: '16px'
+    color: '#38B2AC',
+    fontWeight: '600',
+    padding: '8px 14px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '9999px',
+    boxShadow: 'inset 3px 3px 6px rgb(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.5)'
   },
   mainContent: {
     display: 'flex',
     flex: 1,
-    padding: '16px',
-    gap: '16px',
+    padding: '20px 24px',
+    gap: '20px',
     minHeight: 0,
     overflow: 'hidden'
   },
@@ -350,62 +350,72 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '32px',
+    padding: '20px',
+    boxShadow: '9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5)'
   },
   leftPanelHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   sectionTitle: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    letterSpacing: '-0.02em'
   },
   marketCount: {
     fontSize: '12px',
-    color: 'var(--text-muted, #6e7681)',
-    padding: '4px 10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '12px'
+    color: '#6B7280',
+    fontWeight: '500',
+    padding: '6px 14px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '9999px',
+    boxShadow: 'inset 3px 3px 6px rgb(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.5)'
   },
   errorBanner: {
-    padding: '10px 14px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
-    marginBottom: '12px',
+    padding: '14px 18px',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '16px',
+    marginBottom: '16px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)',
+    boxShadow: 'inset 6px 6px 10px rgb(163, 177, 198, 0.6), inset -6px -6px 10px rgba(255, 255, 255, 0.5)',
     flexShrink: 0
   },
   retryBtn: {
-    padding: '6px 12px',
-    border: '1px solid var(--accent-red, #f85149)',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '6px',
+    padding: '8px 16px',
+    border: 'none',
+    backgroundColor: '#E0E5EC',
+    color: '#E53E3E',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '12px',
-    fontWeight: '500'
+    fontWeight: '600',
+    boxShadow: '5px 5px 10px rgb(163, 177, 198, 0.6), -5px -5px 10px rgba(255, 255, 255, 0.5)',
+    transition: 'all 300ms ease-out'
   },
   rightPanel: {
     width: '60%',
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '20px',
     minHeight: 0,
     overflow: 'hidden'
   },
   rightTop: {
     display: 'flex',
-    gap: '16px',
+    gap: '20px',
     flex: '0 0 auto',
     maxHeight: '50%'
   },

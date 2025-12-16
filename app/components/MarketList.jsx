@@ -163,12 +163,9 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                   }}
                   style={{
                     ...styles.singleMarketCard,
-                    backgroundColor: isSelected
-                      ? 'rgba(88, 166, 255, 0.1)'
-                      : 'var(--bg-card, #1c2128)',
-                    borderColor: isSelected
-                      ? 'var(--accent-blue, #58a6ff)'
-                      : 'var(--border-color, #30363d)'
+                    boxShadow: isSelected
+                      ? 'inset 6px 6px 12px rgb(163, 177, 198, 0.6), inset -6px -6px 12px rgba(255, 255, 255, 0.5)'
+                      : '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
                   }}
                 >
                   {market.imageUrl && (
@@ -192,11 +189,11 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                           style={{
                             ...styles.outcomeTag,
                             backgroundColor: idx === 0
-                              ? 'rgba(63, 185, 80, 0.15)'
-                              : 'rgba(248, 81, 73, 0.15)',
+                              ? 'rgba(56, 178, 172, 0.15)'
+                              : 'rgba(229, 62, 62, 0.15)',
                             color: idx === 0
-                              ? 'var(--accent-green, #3fb950)'
-                              : 'var(--accent-red, #f85149)'
+                              ? '#38B2AC'
+                              : '#E53E3E'
                           }}
                         >
                           {outcome}
@@ -217,8 +214,8 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                     style={{
                       ...styles.tradeBtn,
                       backgroundColor: isSelected
-                        ? 'var(--accent-blue, #58a6ff)'
-                        : 'var(--accent-green, #3fb950)'
+                        ? '#6C63FF'
+                        : '#38B2AC'
                     }}
                   >
                     {isSelected ? '✓' : '→'}
@@ -233,7 +230,9 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                 key={group.name}
                 style={{
                   ...styles.groupCard,
-                  borderColor: hasSelectedMarket ? 'var(--accent-blue, #58a6ff)' : 'var(--border-color, #30363d)'
+                  boxShadow: hasSelectedMarket
+                    ? 'inset 6px 6px 12px rgb(163, 177, 198, 0.6), inset -6px -6px 12px rgba(255, 255, 255, 0.5)'
+                    : '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
                 }}
               >
                 {/* Group Header */}
@@ -269,12 +268,9 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                           }}
                           style={{
                             ...styles.marketItem,
-                            backgroundColor: isSelected
-                              ? 'rgba(88, 166, 255, 0.1)'
-                              : 'transparent',
-                            borderColor: isSelected
-                              ? 'var(--accent-blue, #58a6ff)'
-                              : 'var(--border-color, #30363d)'
+                            boxShadow: isSelected
+                              ? 'inset 5px 5px 10px rgb(163, 177, 198, 0.6), inset -5px -5px 10px rgba(255, 255, 255, 0.5)'
+                              : '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)'
                           }}
                         >
                           {/* Market Image */}
@@ -301,11 +297,11 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                                   style={{
                                     ...styles.outcomeTag,
                                     backgroundColor: idx === 0
-                                      ? 'rgba(63, 185, 80, 0.15)'
-                                      : 'rgba(248, 81, 73, 0.15)',
+                                      ? 'rgba(56, 178, 172, 0.15)'
+                                      : 'rgba(229, 62, 62, 0.15)',
                                     color: idx === 0
-                                      ? 'var(--accent-green, #3fb950)'
-                                      : 'var(--accent-red, #f85149)'
+                                      ? '#38B2AC'
+                                      : '#E53E3E'
                                   }}
                                 >
                                   {outcome}
@@ -327,8 +323,8 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
                             style={{
                               ...styles.tradeBtn,
                               backgroundColor: isSelected
-                                ? 'var(--accent-blue, #58a6ff)'
-                                : 'var(--accent-green, #3fb950)'
+                                ? '#6C63FF'
+                                : '#38B2AC'
                             }}
                           >
                             {isSelected ? '✓' : '→'}
@@ -357,49 +353,54 @@ const styles = {
   },
   searchWrapper: {
     position: 'relative',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   searchIcon: {
     position: 'absolute',
-    left: '12px',
+    left: '16px',
     top: '50%',
     transform: 'translateY(-50%)',
     fontSize: '14px',
     opacity: 0.6,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    color: '#6B7280'
   },
   searchInput: {
     width: '100%',
-    padding: '10px 36px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '8px',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
+    padding: '14px 44px',
+    backgroundColor: '#E0E5EC',
+    border: 'none',
+    borderRadius: '16px',
+    color: '#3D4852',
+    fontSize: '14px',
     outline: 'none',
-    transition: 'border-color 0.2s',
-    boxSizing: 'border-box'
+    transition: 'all 300ms ease-out',
+    boxSizing: 'border-box',
+    boxShadow: 'inset 6px 6px 10px rgb(163, 177, 198, 0.6), inset -6px -6px 10px rgba(255, 255, 255, 0.5)'
   },
   clearBtn: {
     position: 'absolute',
-    right: '10px',
+    right: '12px',
     top: '50%',
     transform: 'translateY(-50%)',
-    background: 'none',
+    background: '#E0E5EC',
     border: 'none',
-    color: 'var(--text-muted, #6e7681)',
+    color: '#6B7280',
     fontSize: '12px',
     cursor: 'pointer',
-    padding: '4px 8px',
-    borderRadius: '4px'
+    padding: '6px 10px',
+    borderRadius: '12px',
+    boxShadow: '3px 3px 6px rgb(163, 177, 198, 0.6), -3px -3px 6px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto'
   },
   searchInfo: {
-    fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginBottom: '8px',
+    fontSize: '12px',
+    color: '#6B7280',
+    marginBottom: '12px',
     paddingLeft: '4px',
-    flexShrink: 0
+    flexShrink: 0,
+    fontWeight: '500'
   },
   groupList: {
     flex: 1,
@@ -407,97 +408,103 @@ const styles = {
     paddingRight: '4px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px'
+    gap: '12px'
   },
   groupCard: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '24px',
     overflow: 'hidden',
-    transition: 'border-color 0.2s',
+    transition: 'all 300ms ease-out',
     minHeight: '60px',
-    flexShrink: 0
+    flexShrink: 0,
+    boxShadow: '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
   },
   singleMarketCard: {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)',
+    padding: '16px',
+    borderRadius: '24px',
     cursor: 'pointer',
-    gap: '10px',
-    transition: 'all 0.2s',
+    gap: '12px',
+    transition: 'all 300ms ease-out',
     minHeight: '60px',
-    flexShrink: 0
+    flexShrink: 0,
+    backgroundColor: '#E0E5EC',
+    boxShadow: '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
   },
   groupHeader: {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px',
+    padding: '16px',
     cursor: 'pointer',
-    gap: '10px',
-    transition: 'background-color 0.2s'
+    gap: '12px',
+    transition: 'all 300ms ease-out'
   },
   groupImage: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '6px',
+    width: '44px',
+    height: '44px',
+    borderRadius: '12px',
     objectFit: 'contain',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    flexShrink: 0
+    backgroundColor: '#E0E5EC',
+    flexShrink: 0,
+    boxShadow: 'inset 4px 4px 8px rgb(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   groupInfo: {
     flex: 1,
     minWidth: 0
   },
   groupName: {
-    fontSize: '14px',
+    fontSize: '15px',
     fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    marginBottom: '2px'
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    marginBottom: '4px'
   },
   groupCount: {
-    fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '12px',
+    color: '#6B7280',
+    fontWeight: '500'
   },
   expandIcon: {
     fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    flexShrink: 0
+    color: '#6B7280',
+    flexShrink: 0,
+    transition: 'transform 300ms ease-out'
   },
   marketItems: {
-    borderTop: '1px solid var(--border-color, #30363d)',
-    padding: '8px'
+    padding: '12px',
+    paddingTop: '4px'
   },
   marketItem: {
     display: 'flex',
     alignItems: 'center',
-    padding: '10px',
-    borderRadius: '8px',
-    border: '1px solid transparent',
+    padding: '14px',
+    borderRadius: '16px',
     cursor: 'pointer',
-    gap: '10px',
-    marginBottom: '6px',
-    transition: 'all 0.2s'
+    gap: '12px',
+    marginBottom: '8px',
+    transition: 'all 300ms ease-out',
+    backgroundColor: '#E0E5EC'
   },
   marketImage: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '6px',
+    width: '44px',
+    height: '44px',
+    borderRadius: '12px',
     objectFit: 'contain',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    flexShrink: 0
+    backgroundColor: '#E0E5EC',
+    flexShrink: 0,
+    boxShadow: 'inset 4px 4px 8px rgb(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.5)'
   },
   marketContent: {
     flex: 1,
     minWidth: 0
   },
   marketTitle: {
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: '500',
-    color: 'var(--text-primary, #f0f6fc)',
-    marginBottom: '6px',
-    lineHeight: '1.3',
+    color: '#3D4852',
+    marginBottom: '8px',
+    lineHeight: '1.4',
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
@@ -505,102 +512,107 @@ const styles = {
   },
   selectedTag: {
     fontSize: '9px',
-    padding: '2px 6px',
-    backgroundColor: 'var(--accent-blue, #58a6ff)',
+    padding: '4px 8px',
+    backgroundColor: '#6C63FF',
     color: '#fff',
-    borderRadius: '4px',
+    borderRadius: '8px',
     fontWeight: '600',
-    flexShrink: 0
+    flexShrink: 0,
+    boxShadow: '2px 2px 4px rgb(163, 177, 198, 0.6)'
   },
   outcomes: {
     display: 'flex',
-    gap: '6px',
+    gap: '8px',
     flexWrap: 'wrap',
     alignItems: 'center'
   },
   outcomeTag: {
-    fontSize: '10px',
-    padding: '2px 8px',
-    borderRadius: '10px',
-    fontWeight: '500'
+    fontSize: '11px',
+    padding: '4px 10px',
+    borderRadius: '9999px',
+    fontWeight: '500',
+    boxShadow: 'inset 2px 2px 4px rgb(163, 177, 198, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.4)'
   },
   statusTag: {
-    fontSize: '9px',
-    padding: '2px 6px',
-    backgroundColor: 'rgba(63, 185, 80, 0.15)',
-    color: 'var(--accent-green, #3fb950)',
-    borderRadius: '10px',
-    fontWeight: '500'
+    fontSize: '10px',
+    padding: '4px 10px',
+    backgroundColor: 'rgba(56, 178, 172, 0.15)',
+    color: '#38B2AC',
+    borderRadius: '9999px',
+    fontWeight: '500',
+    boxShadow: 'inset 2px 2px 4px rgb(163, 177, 198, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.4)'
   },
   tradeBtn: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '6px',
+    width: '40px',
+    height: '40px',
+    borderRadius: '12px',
     border: 'none',
     color: '#fff',
-    fontSize: '14px',
+    fontSize: '16px',
     cursor: 'pointer',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'all 0.2s'
+    transition: 'all 300ms ease-out',
+    boxShadow: '4px 4px 8px rgb(163, 177, 198, 0.6), -4px -4px 8px rgba(255, 255, 255, 0.5)',
+    minHeight: 'auto',
+    padding: 0
   },
   skeletonCard: {
-    padding: '14px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)'
+    padding: '20px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '24px',
+    boxShadow: '6px 6px 12px rgb(163, 177, 198, 0.6), -6px -6px 12px rgba(255, 255, 255, 0.5)'
   },
   skeletonHeader: {
     width: '40%',
-    height: '16px',
-    borderRadius: '4px',
-    marginBottom: '8px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)'
+    height: '18px',
+    borderRadius: '8px',
+    marginBottom: '10px'
   },
   skeletonText: {
     width: '60%',
-    height: '12px',
-    borderRadius: '4px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)'
+    height: '14px',
+    borderRadius: '6px'
   },
   emptyState: {
     textAlign: 'center',
-    padding: '40px 20px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)'
+    padding: '48px 24px',
+    backgroundColor: '#E0E5EC',
+    borderRadius: '32px',
+    boxShadow: 'inset 8px 8px 16px rgb(163, 177, 198, 0.6), inset -8px -8px 16px rgba(255, 255, 255, 0.5)'
   },
   emptyIcon: {
-    fontSize: '36px',
+    fontSize: '40px',
     display: 'block',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   emptyTitle: {
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    margin: '0 0 6px 0'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#3D4852',
+    margin: '0 0 8px 0'
   },
   emptyText: {
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)',
+    fontSize: '14px',
+    color: '#6B7280',
     margin: 0
   },
   noResults: {
     textAlign: 'center',
-    padding: '30px 20px'
+    padding: '40px 24px'
   },
   noResultsIcon: {
-    fontSize: '28px',
+    fontSize: '32px',
     display: 'block',
-    marginBottom: '10px',
-    opacity: 0.6
+    marginBottom: '12px',
+    opacity: 0.7
   },
   noResultsText: {
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)',
+    fontSize: '14px',
+    color: '#6B7280',
     margin: 0
   }
 };
