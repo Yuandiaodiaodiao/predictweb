@@ -344,7 +344,8 @@ const styles = {
     minWidth: '360px',
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 0
+    minHeight: 0,
+    overflow: 'hidden'
   },
   leftPanelHeader: {
     display: 'flex',
