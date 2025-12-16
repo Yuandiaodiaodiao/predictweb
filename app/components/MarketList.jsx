@@ -357,93 +357,102 @@ const styles = {
   },
   searchWrapper: {
     position: 'relative',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   searchIcon: {
     position: 'absolute',
-    left: '12px',
+    left: '16px',
     top: '50%',
     transform: 'translateY(-50%)',
-    fontSize: '14px',
-    opacity: 0.6,
-    pointerEvents: 'none'
+    fontSize: '16px',
+    pointerEvents: 'none',
+    zIndex: 1
   },
   searchInput: {
     width: '100%',
-    padding: '10px 36px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '8px',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
+    padding: '14px 44px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    color: 'var(--foreground, #1E293B)',
+    fontSize: '14px',
+    fontWeight: '500',
     outline: 'none',
-    transition: 'border-color 0.2s',
-    boxSizing: 'border-box'
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxSizing: 'border-box',
+    boxShadow: '4px 4px 0 0 var(--foreground, #1E293B)'
   },
   clearBtn: {
     position: 'absolute',
-    right: '10px',
+    right: '14px',
     top: '50%',
     transform: 'translateY(-50%)',
-    background: 'none',
-    border: 'none',
-    color: 'var(--text-muted, #6e7681)',
+    background: 'var(--accent-red, #F87171)',
+    border: '2px solid var(--foreground, #1E293B)',
+    color: 'white',
     fontSize: '12px',
+    fontWeight: '700',
     cursor: 'pointer',
-    padding: '4px 8px',
-    borderRadius: '4px'
+    padding: '4px 10px',
+    borderRadius: '9999px',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   searchInfo: {
-    fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginBottom: '8px',
-    paddingLeft: '4px',
+    fontSize: '12px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)',
+    marginBottom: '12px',
+    paddingLeft: '8px',
     flexShrink: 0
   },
   groupList: {
     flex: 1,
     overflow: 'auto',
-    paddingRight: '4px',
+    paddingRight: '8px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px'
+    gap: '12px'
   },
   groupCard: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    border: '2px solid var(--foreground, #1E293B)',
     overflow: 'hidden',
-    transition: 'border-color 0.2s',
-    minHeight: '60px',
-    flexShrink: 0
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    minHeight: '70px',
+    flexShrink: 0,
+    boxShadow: '4px 4px 0 0 var(--border, #E2E8F0)'
   },
   singleMarketCard: {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)',
+    padding: '14px 16px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    border: '2px solid var(--foreground, #1E293B)',
     cursor: 'pointer',
-    gap: '10px',
-    transition: 'all 0.2s',
-    minHeight: '60px',
-    flexShrink: 0
+    gap: '12px',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    minHeight: '70px',
+    flexShrink: 0,
+    boxShadow: '4px 4px 0 0 var(--border, #E2E8F0)'
   },
   groupHeader: {
     display: 'flex',
     alignItems: 'center',
-    padding: '12px',
+    padding: '14px 16px',
     cursor: 'pointer',
-    gap: '10px',
+    gap: '12px',
     transition: 'background-color 0.2s'
   },
   groupImage: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '6px',
+    width: '44px',
+    height: '44px',
+    borderRadius: '12px',
     objectFit: 'contain',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    border: '2px solid var(--foreground, #1E293B)',
     flexShrink: 0
   },
   groupInfo: {
@@ -451,41 +460,54 @@ const styles = {
     minWidth: 0
   },
   groupName: {
-    fontSize: '14px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    marginBottom: '2px'
+    fontSize: '15px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)',
+    marginBottom: '4px'
   },
   groupCount: {
-    fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '12px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)'
   },
   expandIcon: {
-    fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    flexShrink: 0
+    fontSize: '12px',
+    color: 'var(--foreground, #1E293B)',
+    fontWeight: '700',
+    flexShrink: 0,
+    width: '28px',
+    height: '28px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'var(--tertiary, #FBBF24)',
+    borderRadius: '50%',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   marketItems: {
-    borderTop: '1px solid var(--border-color, #30363d)',
-    padding: '8px'
+    borderTop: '2px dashed var(--border, #E2E8F0)',
+    padding: '12px'
   },
   marketItem: {
     display: 'flex',
     alignItems: 'center',
-    padding: '10px',
-    borderRadius: '8px',
-    border: '1px solid transparent',
+    padding: '12px',
+    borderRadius: '16px',
+    border: '2px solid transparent',
     cursor: 'pointer',
-    gap: '10px',
-    marginBottom: '6px',
-    transition: 'all 0.2s'
+    gap: '12px',
+    marginBottom: '8px',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    backgroundColor: 'var(--muted, #F1F5F9)'
   },
   marketImage: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '6px',
+    width: '44px',
+    height: '44px',
+    borderRadius: '12px',
     objectFit: 'contain',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    border: '2px solid var(--foreground, #1E293B)',
     flexShrink: 0
   },
   marketContent: {
@@ -493,114 +515,122 @@ const styles = {
     minWidth: 0
   },
   marketTitle: {
-    fontSize: '12px',
-    fontWeight: '500',
-    color: 'var(--text-primary, #f0f6fc)',
-    marginBottom: '6px',
-    lineHeight: '1.3',
+    fontSize: '13px',
+    fontWeight: '600',
+    color: 'var(--foreground, #1E293B)',
+    marginBottom: '8px',
+    lineHeight: '1.4',
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
     flexWrap: 'wrap'
   },
   selectedTag: {
-    fontSize: '9px',
-    padding: '2px 6px',
-    backgroundColor: 'var(--accent-blue, #58a6ff)',
-    color: '#fff',
-    borderRadius: '4px',
-    fontWeight: '600',
-    flexShrink: 0
+    fontSize: '10px',
+    padding: '4px 10px',
+    backgroundColor: 'var(--accent, #8B5CF6)',
+    color: 'white',
+    borderRadius: '9999px',
+    fontWeight: '700',
+    flexShrink: 0,
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   outcomes: {
     display: 'flex',
-    gap: '6px',
+    gap: '8px',
     flexWrap: 'wrap',
     alignItems: 'center'
   },
   outcomeTag: {
-    fontSize: '10px',
-    padding: '2px 8px',
-    borderRadius: '10px',
-    fontWeight: '500'
+    fontSize: '11px',
+    padding: '4px 10px',
+    borderRadius: '9999px',
+    fontWeight: '600',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   statusTag: {
-    fontSize: '9px',
-    padding: '2px 6px',
-    backgroundColor: 'rgba(63, 185, 80, 0.15)',
-    color: 'var(--accent-green, #3fb950)',
-    borderRadius: '10px',
-    fontWeight: '500'
+    fontSize: '10px',
+    padding: '4px 10px',
+    backgroundColor: 'var(--quaternary, #34D399)',
+    color: 'var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    fontWeight: '700',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   tradeBtn: {
-    width: '32px',
-    height: '32px',
-    borderRadius: '6px',
-    border: 'none',
-    color: '#fff',
-    fontSize: '14px',
+    width: '36px',
+    height: '36px',
+    borderRadius: '50%',
+    border: '2px solid var(--foreground, #1E293B)',
+    color: 'white',
+    fontSize: '16px',
+    fontWeight: '700',
     cursor: 'pointer',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'all 0.2s'
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   skeletonCard: {
-    padding: '14px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)'
+    padding: '16px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    border: '2px solid var(--border, #E2E8F0)'
   },
   skeletonHeader: {
     width: '40%',
-    height: '16px',
-    borderRadius: '4px',
-    marginBottom: '8px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)'
+    height: '18px',
+    borderRadius: '9999px',
+    marginBottom: '10px',
+    backgroundColor: 'var(--muted, #F1F5F9)'
   },
   skeletonText: {
     width: '60%',
-    height: '12px',
-    borderRadius: '4px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)'
+    height: '14px',
+    borderRadius: '9999px',
+    backgroundColor: 'var(--muted, #F1F5F9)'
   },
   emptyState: {
     textAlign: 'center',
-    padding: '40px 20px',
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '10px',
-    border: '1px solid var(--border-color, #30363d)'
+    padding: '48px 24px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '24px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '6px 6px 0 0 var(--secondary, #F472B6)'
   },
   emptyIcon: {
-    fontSize: '36px',
+    fontSize: '48px',
     display: 'block',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   emptyTitle: {
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
-    margin: '0 0 6px 0'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)',
+    margin: '0 0 8px 0'
   },
   emptyText: {
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)',
+    fontSize: '14px',
+    color: 'var(--muted-foreground, #64748B)',
     margin: 0
   },
   noResults: {
     textAlign: 'center',
-    padding: '30px 20px'
+    padding: '40px 24px'
   },
   noResultsIcon: {
-    fontSize: '28px',
+    fontSize: '36px',
     display: 'block',
-    marginBottom: '10px',
-    opacity: 0.6
+    marginBottom: '12px'
   },
   noResultsText: {
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)',
+    fontSize: '14px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)',
     margin: 0
   }
 };

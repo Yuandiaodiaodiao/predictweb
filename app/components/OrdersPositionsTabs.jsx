@@ -60,43 +60,47 @@ const OrdersPositionsTabs = ({ jwtToken, userAddress, signer, markets = [], onOr
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    border: '2px solid var(--foreground, #1E293B)',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    boxShadow: '6px 6px 0 0 var(--tertiary, #FBBF24)'
   },
   tabHeader: {
     display: 'flex',
-    borderBottom: '1px solid var(--border-color, #30363d)',
-    backgroundColor: 'var(--bg-secondary, #161b22)'
+    gap: '8px',
+    padding: '12px',
+    borderBottom: '2px dashed var(--border, #E2E8F0)',
+    backgroundColor: 'var(--muted, #F1F5F9)'
   },
   tabBtn: {
     flex: 1,
-    padding: '12px 16px',
-    border: 'none',
-    backgroundColor: 'transparent',
-    color: 'var(--text-muted, #6e7681)',
+    padding: '12px 18px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '12px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    color: 'var(--muted-foreground, #64748B)',
     fontSize: '13px',
-    fontWeight: '500',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '6px',
-    transition: 'all 0.2s',
-    borderBottom: '2px solid transparent',
-    marginBottom: '-1px'
+    gap: '8px',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: 'none'
   },
   tabBtnActive: {
-    color: 'var(--text-primary, #f0f6fc)',
-    borderBottomColor: 'var(--accent-blue, #58a6ff)',
-    backgroundColor: 'var(--bg-card, #1c2128)'
+    color: 'white',
+    backgroundColor: 'var(--accent, #8B5CF6)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   tabIcon: {
-    fontSize: '14px'
+    fontSize: '16px'
   },
   tabContent: {
     flex: 1,

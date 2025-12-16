@@ -184,53 +184,62 @@ const styles = {
   networkBadge: {
     display: 'flex',
     alignItems: 'center',
-    gap: '6px',
-    padding: '6px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '20px',
+    gap: '8px',
+    padding: '8px 14px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '9999px',
     fontSize: '12px',
-    border: '1px solid var(--border-color, #30363d)'
+    fontWeight: '600',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)',
+    fontFamily: 'var(--font-heading, Outfit)'
   },
   networkDot: {
-    width: '8px',
-    height: '8px',
+    width: '10px',
+    height: '10px',
     borderRadius: '50%',
-    boxShadow: '0 0 6px currentColor'
+    border: '2px solid var(--foreground, #1E293B)'
   },
   networkName: {
-    color: 'var(--text-secondary, #8b949e)'
+    color: 'var(--foreground, #1E293B)',
+    fontWeight: '600'
   },
   address: {
     padding: '8px 14px',
-    backgroundColor: 'rgba(88, 166, 255, 0.1)',
-    color: 'var(--accent-blue, #58a6ff)',
-    borderRadius: '10px',
+    backgroundColor: 'var(--accent, #8B5CF6)',
+    color: 'white',
+    borderRadius: '9999px',
     fontSize: '13px',
     fontFamily: 'var(--font-mono, monospace)',
-    border: '1px solid rgba(88, 166, 255, 0.3)'
+    fontWeight: '600',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   switchBtn: {
-    padding: '8px 14px',
-    background: 'linear-gradient(135deg, #f0b90b 0%, #f5a623 100%)',
-    color: '#000',
-    border: 'none',
-    borderRadius: '8px',
+    padding: '10px 18px',
+    background: 'var(--tertiary, #FBBF24)',
+    color: 'var(--foreground, #1E293B)',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
     fontSize: '12px',
-    fontWeight: '600',
+    fontWeight: '700',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    fontFamily: 'var(--font-heading, Outfit)'
   },
   connectBtn: {
-    padding: '12px 24px',
-    background: 'linear-gradient(135deg, #f0b90b 0%, #f5a623 100%)',
-    color: '#000',
-    border: 'none',
-    borderRadius: '10px',
-    fontSize: '14px',
-    fontWeight: '600',
+    padding: '14px 28px',
+    background: 'var(--tertiary, #FBBF24)',
+    color: 'var(--foreground, #1E293B)',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    fontSize: '15px',
+    fontWeight: '700',
     cursor: 'pointer',
-    boxShadow: '0 4px 15px rgba(240, 185, 11, 0.4)',
-    transition: 'all 0.2s'
+    boxShadow: '4px 4px 0 0 var(--foreground, #1E293B)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    fontFamily: 'var(--font-heading, Outfit)'
   }
 };
 
