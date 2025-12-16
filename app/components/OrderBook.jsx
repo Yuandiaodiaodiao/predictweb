@@ -50,8 +50,9 @@ const OrderBook = ({ market, onPriceSelect }) => {
       bids = (orderBook.asks || []).map(([price, qty]) => [1 - price, qty]);
     }
 
+    // 统一按价格从低到高排序
     asks.sort((a, b) => a[0] - b[0]);
-    bids.sort((a, b) => b[0] - a[0]);
+    bids.sort((a, b) => a[0] - b[0]);
 
     return { asks, bids };
   };
@@ -123,7 +124,7 @@ const OrderBook = ({ market, onPriceSelect }) => {
               <span>Total</span>
             </div>
             <div style={styles.asksList}>
-              {displayData.asks.slice(0, 8).reverse().map(([price, qty], idx) => {
+              {displayData.asks.slice(0, 8).map(([price, qty], idx) => {
                 const total = (price * qty).toFixed(2);
                 return (
                   <div
