@@ -8,7 +8,7 @@ import TradeModal from './components/TradeModal';
 import OrderBook from './components/OrderBook';
 import Positions from './components/Positions';
 import Orders from './components/Orders';
-import ApprovalManager from './components/ApprovalManager';
+import ApprovalDropdown from './components/ApprovalDropdown';
 import { ToastProvider } from './components/Toast';
 
 const API_BASE_URL = '/api';
@@ -189,6 +189,7 @@ export default function Home() {
               </div>
             )}
             <WalletConnect onConnect={handleConnect} />
+            <ApprovalDropdown signer={signer} userAddress={userAddress} />
             {userAddress && jwtToken && (
               <span style={styles.authStatus}>✓ 已认证</span>
             )}
@@ -259,15 +260,6 @@ export default function Home() {
                   signer={signer}
                 />
               </div>
-
-              {signer && (
-                <div style={styles.approvalColumn}>
-                  <ApprovalManager
-                    signer={signer}
-                    userAddress={userAddress}
-                  />
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -407,15 +399,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '16px',
-    height: '100vh',
-    maxHeight: '100vh',
-    overflowY: 'auto',
-    paddingTop: '16px',
-    paddingBottom: '16px'
-  },
-  approvalColumn: {
-    width: '320px',
-    flexShrink: 0,
     height: '100vh',
     maxHeight: '100vh',
     overflowY: 'auto',
