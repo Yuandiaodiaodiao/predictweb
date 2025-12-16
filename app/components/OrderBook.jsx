@@ -75,9 +75,9 @@ const OrderBook = ({ market, onPriceSelect }) => {
       bids = (orderBook.asks || []).map(([price, qty]) => [1 - price, qty]);
     }
 
-    // asks按价格从低到高排序（最低卖价在顶部靠近spread）
+    // asks按价格从高到低排序（最低卖价在底部靠近spread）
     // bids按价格从高到低排序（最高买价在顶部靠近spread）
-    asks.sort((a, b) => a[0] - b[0]);
+    asks.sort((a, b) => b[0] - a[0]);
     bids.sort((a, b) => b[0] - a[0]);
 
     return { asks, bids };
