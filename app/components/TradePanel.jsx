@@ -688,13 +688,14 @@ const TradePanel = ({ market, signer, jwtToken, onTradeSuccess, selectedOutcome 
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    padding: '16px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    padding: '20px',
+    border: '2px solid var(--foreground, #1E293B)',
     height: '100%',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    boxShadow: '6px 6px 0 0 var(--secondary, #F472B6)'
   },
   placeholder: {
     flex: 1,
@@ -702,78 +703,94 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '40px 20px'
+    padding: '48px 24px'
   },
   placeholderIcon: {
-    fontSize: '48px',
-    marginBottom: '16px'
+    fontSize: '56px',
+    marginBottom: '20px'
   },
   placeholderText: {
     margin: 0,
-    fontSize: '14px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '15px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)'
   },
   sdkBadge: {
     fontSize: '10px',
-    padding: '4px 8px',
-    borderRadius: '6px',
-    fontWeight: '500'
+    padding: '6px 12px',
+    borderRadius: '9999px',
+    fontWeight: '700',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   approvalBanner: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px',
-    padding: '10px 12px',
-    backgroundColor: 'rgba(210, 153, 34, 0.15)',
-    borderRadius: '8px',
-    marginBottom: '12px',
-    border: '1px solid rgba(210, 153, 34, 0.3)'
+    gap: '12px',
+    padding: '12px 16px',
+    backgroundColor: 'var(--tertiary, #FBBF24)',
+    borderRadius: '14px',
+    marginBottom: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   approvalIcon: {
-    fontSize: '18px'
+    fontSize: '20px'
   },
   approvalContent: {
     flex: 1
   },
   approvalMessage: {
-    fontSize: '12px',
-    fontWeight: '600',
-    color: 'var(--accent-orange, #d29922)'
+    fontSize: '13px',
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)'
   },
   approvalStatus: {
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
+    fontWeight: '600',
+    color: 'var(--text-secondary, #475569)',
     marginTop: '2px'
   },
   approvalClose: {
-    background: 'none',
-    border: 'none',
-    fontSize: '16px',
+    background: 'var(--card, #FFFFFF)',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '50%',
+    width: '28px',
+    height: '28px',
+    fontSize: '14px',
+    fontWeight: '700',
     cursor: 'pointer',
-    color: 'var(--text-muted, #6e7681)',
-    padding: '0 4px'
+    color: 'var(--foreground, #1E293B)',
+    padding: '0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   marketInfo: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px'
+    padding: '12px 14px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '12px',
+    marginBottom: '16px',
+    border: '2px solid var(--border, #E2E8F0)'
   },
   marketQuestion: {
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
+    fontSize: '13px',
+    fontWeight: '500',
+    color: 'var(--text-secondary, #475569)',
     lineHeight: '1.4',
     display: '-webkit-box',
     WebkitLineClamp: 2,
@@ -781,161 +798,187 @@ const styles = {
     overflow: 'hidden'
   },
   errorBanner: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
-    fontSize: '12px',
-    marginBottom: '12px',
-    border: '1px solid rgba(248, 81, 73, 0.3)'
+    padding: '12px 16px',
+    backgroundColor: 'var(--accent-red, #F87171)',
+    color: 'white',
+    borderRadius: '12px',
+    fontSize: '13px',
+    fontWeight: '600',
+    marginBottom: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   warningBanner: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(210, 153, 34, 0.1)',
-    color: 'var(--accent-orange, #d29922)',
-    borderRadius: '8px',
-    fontSize: '12px',
-    marginBottom: '12px',
-    border: '1px solid rgba(210, 153, 34, 0.3)'
+    padding: '12px 16px',
+    backgroundColor: 'var(--tertiary, #FBBF24)',
+    color: 'var(--foreground, #1E293B)',
+    borderRadius: '12px',
+    fontSize: '13px',
+    fontWeight: '600',
+    marginBottom: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   formGroup: {
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   label: {
     display: 'block',
-    marginBottom: '6px',
+    marginBottom: '8px',
     fontSize: '11px',
-    fontWeight: '500',
-    color: 'var(--text-muted, #6e7681)',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)',
     textTransform: 'uppercase',
-    letterSpacing: '0.5px'
+    letterSpacing: '1px'
   },
   toggleGroup: {
     display: 'flex',
-    gap: '6px'
+    gap: '8px',
+    padding: '4px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '12px',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   toggleBtn: {
     flex: 1,
-    padding: '8px 12px',
+    padding: '10px 14px',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '8px',
     cursor: 'pointer',
-    fontSize: '12px',
-    fontWeight: '500',
-    transition: 'all 0.2s'
+    fontSize: '13px',
+    fontWeight: '700',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: 'none'
   },
   priceReference: {
     display: 'flex',
-    gap: '8px',
-    marginBottom: '12px'
+    gap: '10px',
+    marginBottom: '16px'
   },
   priceRefItem: {
     flex: 1,
-    padding: '8px 10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '6px',
+    padding: '10px 12px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '12px',
     textAlign: 'center',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    border: '2px solid var(--border, #E2E8F0)'
   },
   priceRefLabel: {
     display: 'block',
     fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    marginBottom: '2px'
+    fontWeight: '700',
+    color: 'var(--muted-foreground, #64748B)',
+    marginBottom: '4px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px'
   },
   priceRefValueBid: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: 'var(--accent-green, #3fb950)',
+    fontSize: '14px',
+    fontWeight: '700',
+    color: 'var(--quaternary, #34D399)',
     fontFamily: 'var(--font-mono, monospace)'
   },
   priceRefValueAsk: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: 'var(--accent-red, #f85149)',
+    fontSize: '14px',
+    fontWeight: '700',
+    color: 'var(--accent-red, #F87171)',
     fontFamily: 'var(--font-mono, monospace)'
   },
   inputWrapper: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '6px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '12px',
     overflow: 'hidden',
-    border: '1px solid var(--border-color, #30363d)'
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--border, #E2E8F0)'
   },
   inputPrefix: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-secondary, #161b22)',
-    color: 'var(--text-muted, #6e7681)',
-    fontSize: '13px',
-    borderRight: '1px solid var(--border-color, #30363d)'
+    padding: '12px 14px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    color: 'var(--foreground, #1E293B)',
+    fontSize: '14px',
+    fontWeight: '700',
+    borderRight: '2px solid var(--foreground, #1E293B)'
   },
   input: {
     flex: 1,
-    padding: '10px 12px',
+    padding: '12px 14px',
     border: 'none',
     backgroundColor: 'transparent',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
+    color: 'var(--foreground, #1E293B)',
+    fontSize: '14px',
+    fontWeight: '600',
     outline: 'none'
   },
   inputFull: {
     width: '100%',
-    padding: '10px 12px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '6px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-primary, #f0f6fc)',
-    fontSize: '13px',
+    padding: '12px 14px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '12px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    color: 'var(--foreground, #1E293B)',
+    fontSize: '14px',
+    fontWeight: '600',
     boxSizing: 'border-box',
-    outline: 'none'
+    outline: 'none',
+    boxShadow: '3px 3px 0 0 var(--border, #E2E8F0)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
   },
   quickBtns: {
     display: 'flex',
-    gap: '4px',
-    marginTop: '6px'
+    gap: '6px',
+    marginTop: '10px'
   },
   quickBtn: {
     flex: 1,
-    padding: '5px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '4px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)',
+    padding: '8px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    color: 'var(--foreground, #1E293B)',
     cursor: 'pointer',
     fontSize: '11px',
-    transition: 'all 0.2s'
+    fontWeight: '700',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   estimate: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px'
+    padding: '14px 16px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '14px',
+    marginBottom: '16px',
+    border: '2px solid var(--border, #E2E8F0)'
   },
   estimateRow: {
     display: 'flex',
     justifyContent: 'space-between',
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    marginBottom: '4px'
+    fontSize: '13px',
+    color: 'var(--text-secondary, #475569)',
+    marginBottom: '6px',
+    fontWeight: '500'
   },
   estimateValue: {
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)',
     fontFamily: 'var(--font-mono, monospace)'
   },
   submitBtn: {
     width: '100%',
-    padding: '12px',
-    border: 'none',
-    borderRadius: '8px',
-    color: '#fff',
+    padding: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    color: 'white',
     cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '600',
-    transition: 'all 0.2s',
-    marginTop: 'auto'
+    fontSize: '15px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    marginTop: 'auto',
+    boxShadow: '4px 4px 0 0 var(--foreground, #1E293B)'
   }
 };
 

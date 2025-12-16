@@ -110,15 +110,15 @@ const Toast = ({ toast, onRemove }) => {
   const getStyle = () => {
     const baseStyle = { ...styles.toast };
     if (isExiting) {
-      baseStyle.animation = 'slideOut 0.3s ease-out forwards';
+      baseStyle.animation = 'slideOut 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
     }
     switch (toast.type) {
       case 'success':
-        return { ...baseStyle, borderLeft: '4px solid #4caf50' };
+        return { ...baseStyle, boxShadow: '4px 4px 0 0 var(--quaternary, #34D399)' };
       case 'error':
-        return { ...baseStyle, borderLeft: '4px solid #f44336' };
+        return { ...baseStyle, boxShadow: '4px 4px 0 0 var(--accent-red, #F87171)' };
       case 'info':
-        return { ...baseStyle, borderLeft: '4px solid #2196f3' };
+        return { ...baseStyle, boxShadow: '4px 4px 0 0 var(--accent, #8B5CF6)' };
       default:
         return baseStyle;
     }
@@ -136,43 +136,53 @@ const Toast = ({ toast, onRemove }) => {
 const styles = {
   container: {
     position: 'fixed',
-    top: '20px',
-    right: '20px',
+    top: '24px',
+    right: '24px',
     zIndex: 10000,
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
-    maxWidth: '400px',
+    gap: '12px',
+    maxWidth: '420px',
   },
   toast: {
     display: 'flex',
     alignItems: 'center',
-    gap: '12px',
-    padding: '14px 16px',
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-    animation: 'slideIn 0.3s ease-out',
+    gap: '14px',
+    padding: '16px 18px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '4px 4px 0 0 var(--foreground, #1E293B)',
+    animation: 'slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
   },
   icon: {
-    fontSize: '18px',
+    fontSize: '20px',
     flexShrink: 0,
   },
   message: {
     flex: 1,
     fontSize: '14px',
-    color: '#333',
-    lineHeight: '1.4',
+    fontWeight: '600',
+    color: 'var(--foreground, #1E293B)',
+    lineHeight: '1.5',
   },
   closeBtn: {
-    background: 'none',
-    border: 'none',
-    fontSize: '20px',
-    color: '#999',
+    background: 'var(--muted, #F1F5F9)',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '50%',
+    width: '28px',
+    height: '28px',
+    fontSize: '14px',
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)',
     cursor: 'pointer',
     padding: '0',
-    lineHeight: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     flexShrink: 0,
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)',
+    transition: 'all 0.2s',
   },
 };
 

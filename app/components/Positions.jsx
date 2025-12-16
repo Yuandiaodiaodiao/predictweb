@@ -459,7 +459,7 @@ const PositionCard = ({ position, markets = [], onSelect, onRedeem, isRedeeming,
 const styles = {
   container: {
     backgroundColor: 'transparent',
-    padding: '16px',
+    padding: '20px',
     height: '100%',
     display: 'flex',
     flexDirection: 'column'
@@ -468,32 +468,37 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px'
+    marginBottom: '16px'
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)'
   },
   refreshBtn: {
-    padding: '6px 10px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '6px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)',
+    padding: '8px 14px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    color: 'var(--foreground, #1E293B)',
     cursor: 'pointer',
     fontSize: '14px',
-    transition: 'all 0.2s'
+    fontWeight: '700',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   summary: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px',
-    flexShrink: 0
+    padding: '16px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '14px',
+    marginBottom: '16px',
+    flexShrink: 0,
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   summaryItem: {
     textAlign: 'center'
@@ -501,88 +506,98 @@ const styles = {
   summaryLabel: {
     display: 'block',
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginBottom: '4px'
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    color: 'var(--muted-foreground, #64748B)',
+    marginBottom: '6px'
   },
   summaryValue: {
-    fontSize: '14px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '15px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-mono, monospace)',
+    color: 'var(--foreground, #1E293B)'
   },
   error: {
-    padding: '10px 12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
+    padding: '12px 16px',
+    backgroundColor: 'var(--accent-red, #F87171)',
+    color: 'white',
+    borderRadius: '12px',
     fontSize: '13px',
-    marginBottom: '12px',
-    border: '1px solid rgba(248, 81, 73, 0.3)',
+    fontWeight: '600',
+    marginBottom: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)',
     flexShrink: 0
   },
   loading: {
     textAlign: 'center',
-    padding: '20px',
-    color: 'var(--text-muted, #6e7681)'
+    padding: '24px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)'
   },
   emptyState: {
     textAlign: 'center',
-    padding: '30px 20px'
+    padding: '40px 24px'
   },
   emptyIcon: {
-    fontSize: '32px',
+    fontSize: '40px',
     display: 'block',
-    marginBottom: '8px'
+    marginBottom: '12px'
   },
   emptyText: {
     margin: 0,
-    fontSize: '13px',
-    color: 'var(--text-muted, #6e7681)'
+    fontSize: '14px',
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)'
   },
   positionList: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    gap: '12px',
     flex: 1,
     overflowY: 'auto',
     minHeight: 0
   },
   positionCard: {
-    padding: '12px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    transition: 'all 0.2s'
+    padding: '16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '16px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: '4px 4px 0 0 var(--border, #E2E8F0)'
   },
   positionHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: '10px'
+    marginBottom: '12px'
   },
   positionMarket: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: 'var(--text-primary, #f0f6fc)',
+    fontSize: '14px',
+    fontWeight: '600',
+    color: 'var(--foreground, #1E293B)',
     flex: 1,
-    marginRight: '8px'
+    marginRight: '10px'
   },
   positionOutcome: {
-    padding: '3px 8px',
-    borderRadius: '4px',
+    padding: '6px 12px',
+    borderRadius: '9999px',
     fontSize: '11px',
-    fontWeight: '500'
+    fontWeight: '700',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   clickHint: {
-    fontSize: '10px',
-    color: 'var(--accent-blue, #58a6ff)',
-    marginBottom: '8px',
-    opacity: 0.8
+    fontSize: '11px',
+    fontWeight: '600',
+    color: 'var(--accent, #8B5CF6)',
+    marginBottom: '10px'
   },
   positionDetails: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
-    gap: '6px',
-    marginBottom: '10px'
+    gap: '8px',
+    marginBottom: '12px'
   },
   positionRow: {
     display: 'flex',
@@ -590,51 +605,60 @@ const styles = {
     fontSize: '12px'
   },
   positionLabel: {
-    color: 'var(--text-muted, #6e7681)'
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)'
   },
   positionValue: {
-    color: 'var(--text-primary, #f0f6fc)',
-    fontWeight: '500'
+    color: 'var(--foreground, #1E293B)',
+    fontWeight: '700',
+    fontFamily: 'var(--font-mono, monospace)'
   },
   positionPnL: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '8px 10px',
-    borderRadius: '6px'
+    padding: '10px 14px',
+    borderRadius: '12px',
+    border: '2px solid var(--border, #E2E8F0)'
   },
   pnlLabel: {
     fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)'
+    fontWeight: '600',
+    color: 'var(--text-secondary, #475569)'
   },
   pnlValue: {
-    fontSize: '13px',
-    fontWeight: '600'
+    fontSize: '14px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-mono, monospace)'
   },
   showMoreBtn: {
     width: '100%',
-    marginTop: '12px',
-    padding: '10px',
-    border: '1px solid var(--border-color, #30363d)',
-    borderRadius: '8px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
+    marginTop: '16px',
+    padding: '12px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    backgroundColor: 'var(--card, #FFFFFF)',
     cursor: 'pointer',
     fontSize: '13px',
-    color: 'var(--text-secondary, #8b949e)',
-    flexShrink: 0
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)',
+    flexShrink: 0,
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
   },
   redeemBtn: {
     width: '100%',
-    marginTop: '10px',
-    padding: '10px',
-    border: 'none',
-    borderRadius: '8px',
-    backgroundColor: 'var(--accent-green, #3fb950)',
-    color: '#fff',
+    marginTop: '12px',
+    padding: '12px',
+    border: '2px solid var(--foreground, #1E293B)',
+    borderRadius: '9999px',
+    backgroundColor: 'var(--quaternary, #34D399)',
+    color: 'var(--foreground, #1E293B)',
     cursor: 'pointer',
     fontSize: '13px',
-    fontWeight: '600',
-    transition: 'all 0.2s'
+    fontWeight: '700',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   }
 };
 

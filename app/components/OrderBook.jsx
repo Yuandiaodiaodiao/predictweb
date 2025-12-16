@@ -231,84 +231,99 @@ const OrderBook = ({ market, onPriceSelect, selectedOutcome = 'yes', onOutcomeCh
 
 const styles = {
   container: {
-    backgroundColor: 'var(--bg-card, #1c2128)',
-    borderRadius: '12px',
-    padding: '16px',
-    border: '1px solid var(--border-color, #30363d)',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderRadius: '20px',
+    padding: '20px',
+    border: '2px solid var(--foreground, #1E293B)',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     maxHeight: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    boxShadow: '6px 6px 0 0 var(--border, #E2E8F0)'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   title: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)'
   },
   outcomeToggle: {
     display: 'flex',
-    gap: '4px'
+    gap: '6px',
+    padding: '4px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '9999px',
+    border: '2px solid var(--foreground, #1E293B)'
   },
   toggleBtn: {
-    padding: '6px 12px',
+    padding: '8px 16px',
     border: 'none',
-    borderRadius: '6px',
+    borderRadius: '9999px',
     cursor: 'pointer',
     fontSize: '12px',
-    fontWeight: '500',
-    transition: 'all 0.2s',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    color: 'var(--text-secondary, #8b949e)'
+    fontWeight: '700',
+    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+    backgroundColor: 'transparent',
+    color: 'var(--muted-foreground, #64748B)',
+    boxShadow: 'none'
   },
   toggleBtnActive: {
-    backgroundColor: 'var(--accent-blue, #58a6ff)',
-    color: '#fff'
+    backgroundColor: 'var(--accent, #8B5CF6)',
+    color: 'white',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   marketInfo: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '8px',
-    marginBottom: '12px',
-    flexShrink: 0
+    padding: '12px 14px',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '12px',
+    marginBottom: '16px',
+    flexShrink: 0,
+    border: '2px solid var(--border, #E2E8F0)'
   },
   marketTitle: {
     fontSize: '13px',
-    color: 'var(--text-secondary, #8b949e)'
+    fontWeight: '500',
+    color: 'var(--text-secondary, #475569)'
   },
   loading: {
     textAlign: 'center',
-    padding: '20px',
-    color: 'var(--text-muted, #6e7681)',
+    padding: '24px',
+    color: 'var(--muted-foreground, #64748B)',
+    fontWeight: '600',
     flexShrink: 0
   },
   error: {
     textAlign: 'center',
-    padding: '12px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
+    padding: '14px',
+    backgroundColor: 'var(--accent-red, #F87171)',
+    color: 'white',
+    borderRadius: '12px',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)',
+    fontWeight: '600',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)',
     flexShrink: 0
   },
   retryBtn: {
-    marginLeft: '8px',
-    padding: '4px 8px',
-    border: '1px solid var(--accent-red, #f85149)',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '4px',
+    marginLeft: '10px',
+    padding: '6px 12px',
+    border: '2px solid var(--foreground, #1E293B)',
+    backgroundColor: 'white',
+    color: 'var(--foreground, #1E293B)',
+    borderRadius: '9999px',
     cursor: 'pointer',
-    fontSize: '12px'
+    fontSize: '12px',
+    fontWeight: '700',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   orderBookContent: {
     flex: 1,
@@ -317,17 +332,21 @@ const styles = {
     minHeight: 0
   },
   section: {
-    marginBottom: '4px'
+    marginBottom: '6px'
   },
   sectionHeader: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    padding: '8px 10px',
+    padding: '10px 12px',
     fontSize: '10px',
-    color: 'var(--text-muted, #6e7681)',
-    fontWeight: '600',
+    color: 'var(--foreground, #1E293B)',
+    fontWeight: '700',
     textTransform: 'uppercase',
-    letterSpacing: '0.5px'
+    letterSpacing: '1px',
+    fontFamily: 'var(--font-heading, Outfit)',
+    backgroundColor: 'var(--muted, #F1F5F9)',
+    borderRadius: '10px',
+    marginBottom: '6px'
   },
   asksList: {
     display: 'flex',
@@ -340,73 +359,82 @@ const styles = {
   orderRow: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
-    padding: '8px 10px',
+    padding: '10px 12px',
     fontSize: '13px',
     position: 'relative',
     cursor: 'pointer',
-    transition: 'background-color 0.2s',
-    borderRadius: '4px'
+    transition: 'all 0.2s',
+    borderRadius: '8px',
+    marginBottom: '2px'
   },
   askPrice: {
-    color: 'var(--accent-red, #f85149)',
-    fontWeight: '600',
+    color: 'var(--accent-red, #F87171)',
+    fontWeight: '700',
     fontFamily: 'var(--font-mono, monospace)'
   },
   bidPrice: {
-    color: 'var(--accent-green, #3fb950)',
-    fontWeight: '600',
+    color: 'var(--quaternary, #34D399)',
+    fontWeight: '700',
     fontFamily: 'var(--font-mono, monospace)'
   },
   qty: {
-    color: 'var(--text-secondary, #8b949e)',
+    color: 'var(--text-secondary, #475569)',
     textAlign: 'center',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: 'var(--font-mono, monospace)',
+    fontWeight: '600'
   },
   total: {
-    color: 'var(--text-muted, #6e7681)',
+    color: 'var(--muted-foreground, #64748B)',
     textAlign: 'right',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: 'var(--font-mono, monospace)',
+    fontWeight: '500'
   },
   depthBar: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    opacity: 0.2,
+    opacity: 0.25,
     zIndex: 0,
-    borderRadius: '4px'
+    borderRadius: '8px'
   },
   askBar: {
     right: 0,
-    backgroundColor: 'var(--accent-red, #f85149)'
+    backgroundColor: 'var(--accent-red, #F87171)'
   },
   bidBar: {
     right: 0,
-    backgroundColor: 'var(--accent-green, #3fb950)'
+    backgroundColor: 'var(--quaternary, #34D399)'
   },
   spread: {
     textAlign: 'center',
-    padding: '10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    borderRadius: '6px',
-    margin: '8px 0'
+    padding: '12px 14px',
+    backgroundColor: 'var(--tertiary, #FBBF24)',
+    fontSize: '13px',
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)',
+    borderRadius: '12px',
+    margin: '10px 0',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   spreadValue: {
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)',
+    fontWeight: '700',
+    color: 'var(--foreground, #1E293B)',
     fontFamily: 'var(--font-mono, monospace)'
   },
   timestamp: {
     textAlign: 'center',
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)',
-    marginTop: '10px'
+    fontWeight: '600',
+    color: 'var(--muted-foreground, #64748B)',
+    marginTop: '12px'
   },
   placeholder: {
     textAlign: 'center',
-    padding: '40px 20px',
-    color: 'var(--text-muted, #6e7681)'
+    padding: '48px 24px',
+    color: 'var(--muted-foreground, #64748B)',
+    fontWeight: '600',
+    fontSize: '14px'
   }
 };
 

@@ -260,20 +260,22 @@ export default function Home() {
 const styles = {
   app: {
     height: '100vh',
-    backgroundColor: 'var(--bg-primary, #0d1117)',
+    backgroundColor: 'var(--background, #FFFDF5)',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'relative'
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '12px 20px',
-    backgroundColor: 'var(--bg-secondary, #161b22)',
-    borderBottom: '1px solid var(--border-color, #30363d)',
+    padding: '16px 24px',
+    backgroundColor: 'var(--card, #FFFFFF)',
+    borderBottom: '2px solid var(--foreground, #1E293B)',
     zIndex: 100,
-    flexShrink: 0
+    flexShrink: 0,
+    boxShadow: '0 4px 0 0 var(--border, #E2E8F0)'
   },
   headerLeft: {
     display: 'flex',
@@ -282,12 +284,12 @@ const styles = {
   },
   logo: {
     margin: 0,
-    fontSize: '20px',
-    fontWeight: '700',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text'
+    fontSize: '22px',
+    fontWeight: '800',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--accent, #8B5CF6)',
+    letterSpacing: '-0.02em',
+    textShadow: '2px 2px 0 var(--secondary, #F472B6)'
   },
   headerRight: {
     display: 'flex',
@@ -300,47 +302,54 @@ const styles = {
     gap: '10px'
   },
   accountName: {
-    fontSize: '12px',
-    color: 'var(--text-secondary, #8b949e)',
-    fontWeight: '500'
+    fontSize: '13px',
+    color: 'var(--text-secondary, #475569)',
+    fontWeight: '600',
+    fontFamily: 'var(--font-heading, Outfit)'
   },
   referralBadge: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
-    padding: '6px 10px',
-    backgroundColor: 'rgba(163, 113, 247, 0.1)',
-    borderRadius: '8px',
-    border: '1px solid rgba(163, 113, 247, 0.3)'
+    padding: '8px 12px',
+    backgroundColor: 'var(--accent, #8B5CF6)',
+    borderRadius: '9999px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   referralLabel: {
     fontSize: '11px',
-    color: 'var(--accent-purple, #a371f7)'
+    fontWeight: '600',
+    color: 'white',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px'
   },
   referralCode: {
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: '700',
-    color: 'var(--accent-purple, #a371f7)',
+    color: 'white',
     cursor: 'pointer',
     fontFamily: 'var(--font-mono, monospace)',
-    letterSpacing: '0.5px'
+    letterSpacing: '1px'
   },
   authStatus: {
     display: 'flex',
     alignItems: 'center',
-    gap: '4px',
-    fontSize: '11px',
-    color: 'var(--accent-green, #3fb950)',
-    fontWeight: '500',
-    padding: '5px 10px',
-    backgroundColor: 'rgba(63, 185, 80, 0.1)',
-    borderRadius: '16px'
+    gap: '6px',
+    fontSize: '12px',
+    color: 'var(--foreground, #1E293B)',
+    fontWeight: '600',
+    padding: '8px 14px',
+    backgroundColor: 'var(--quaternary, #34D399)',
+    borderRadius: '9999px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '3px 3px 0 0 var(--foreground, #1E293B)'
   },
   mainContent: {
     display: 'flex',
     flex: 1,
-    padding: '16px',
-    gap: '16px',
+    padding: '20px 24px',
+    gap: '20px',
     minHeight: 0,
     overflow: 'hidden'
   },
@@ -356,56 +365,66 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '12px',
+    marginBottom: '16px',
     flexShrink: 0
   },
   sectionTitle: {
     margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, #f0f6fc)'
+    fontSize: '18px',
+    fontWeight: '700',
+    fontFamily: 'var(--font-heading, Outfit)',
+    color: 'var(--foreground, #1E293B)',
+    position: 'relative',
+    display: 'inline-block'
   },
   marketCount: {
     fontSize: '12px',
-    color: 'var(--text-muted, #6e7681)',
-    padding: '4px 10px',
-    backgroundColor: 'var(--bg-tertiary, #21262d)',
-    borderRadius: '12px'
+    fontWeight: '600',
+    color: 'var(--foreground, #1E293B)',
+    padding: '6px 14px',
+    backgroundColor: 'var(--tertiary, #FBBF24)',
+    borderRadius: '9999px',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
   },
   errorBanner: {
-    padding: '10px 14px',
-    backgroundColor: 'rgba(248, 81, 73, 0.1)',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '8px',
-    marginBottom: '12px',
+    padding: '12px 16px',
+    backgroundColor: 'var(--accent-red, #F87171)',
+    color: 'white',
+    borderRadius: '16px',
+    marginBottom: '16px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     fontSize: '13px',
-    border: '1px solid rgba(248, 81, 73, 0.3)',
+    fontWeight: '600',
+    border: '2px solid var(--foreground, #1E293B)',
+    boxShadow: '4px 4px 0 0 var(--foreground, #1E293B)',
     flexShrink: 0
   },
   retryBtn: {
-    padding: '6px 12px',
-    border: '1px solid var(--accent-red, #f85149)',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-red, #f85149)',
-    borderRadius: '6px',
+    padding: '8px 16px',
+    border: '2px solid var(--foreground, #1E293B)',
+    backgroundColor: 'white',
+    color: 'var(--foreground, #1E293B)',
+    borderRadius: '9999px',
     cursor: 'pointer',
     fontSize: '12px',
-    fontWeight: '500'
+    fontWeight: '700',
+    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)',
+    transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
   },
   rightPanel: {
     width: '60%',
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '20px',
     minHeight: 0,
     overflow: 'hidden'
   },
   rightTop: {
     display: 'flex',
-    gap: '16px',
+    gap: '20px',
     flex: '0 0 auto',
     maxHeight: '50%'
   },
