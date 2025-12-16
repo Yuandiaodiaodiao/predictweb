@@ -8,6 +8,18 @@ import { useToast } from './Toast';
 // 动态导入 SDK
 let OrderBuilder, ChainId, Side, setApprovals, AddressesByChainId;
 
+// ERC20 ABI - 用于检查 USDT 授权
+const ERC20_ABI = [
+  'function approve(address spender, uint256 amount) returns (bool)',
+  'function allowance(address owner, address spender) view returns (uint256)',
+];
+
+// ERC1155 ABI - 用于检查 Token 授权
+const ERC1155_ABI = [
+  'function setApprovalForAll(address operator, bool approved)',
+  'function isApprovedForAll(address account, address operator) view returns (bool)',
+];
+
 // BSC 网络配置
 const BSC_CHAIN_ID = 56;
 const BSC_CHAIN_ID_HEX = '0x38';
@@ -78,7 +90,11 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
   const [userAddress, setUserAddress] = useState('');
   const [sdkLoaded, setSdkLoaded] = useState(false);
 
-  const { showError, showSuccess } = useToast();
+  // 授权相关状态
+  const [approvalBanner, setApprovalBanner] = useState(null); // { type: 'usdt' | 'token', message: string }
+  const [isApproving, setIsApproving] = useState(false);
+
+  const { showError, showSuccess, showInfo } = useToast();
 
   useEffect(() => {
     loadSDK().then(success => {
@@ -155,6 +171,111 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
   };
 
   if (!isOpen || !market) return null;
+
+  // 检查授权状态
+  const checkApprovalForTrade = async (tradeSide, requiredAmount, freshSigner, freshAddress) => {
+    if (!AddressesByChainId) return { approved: true };
+
+    const addresses = AddressesByChainId[BSC_CHAIN_ID];
+    if (!addresses) return { approved: true };
+
+    const {
+      CTF_EXCHANGE,
+      NEG_RISK_CTF_EXCHANGE,
+      CONDITIONAL_TOKENS,
+      USDT,
+      COLLATERAL
+    } = addresses;
+
+    const isNegRisk = market.isNegRisk || false;
+    const exchangeAddress = isNegRisk ? NEG_RISK_CTF_EXCHANGE : CTF_EXCHANGE;
+
+    if (tradeSide === 'buy') {
+      // Buy 订单：检查 USDT 授权
+      const usdtAddress = USDT || COLLATERAL;
+      if (!usdtAddress) return { approved: true };
+
+      try {
+        const usdtContract = new ethers.Contract(usdtAddress, ERC20_ABI, freshSigner);
+        const allowance = await usdtContract.allowance(freshAddress, exchangeAddress);
+
+        if (allowance < requiredAmount) {
+          return {
+            approved: false,
+            type: 'usdt',
+            tokenName: 'USDT',
+            tokenAddress: usdtAddress,
+            spenderAddress: exchangeAddress,
+            requiredAmount: requiredAmount,
+            currentAllowance: allowance
+          };
+        }
+      } catch (err) {
+        console.error('Error checking USDT allowance:', err);
+      }
+    } else {
+      // Sell 订单：检查 Token (ERC1155) 授权
+      if (!CONDITIONAL_TOKENS) return { approved: true };
+
+      try {
+        const ctContract = new ethers.Contract(CONDITIONAL_TOKENS, ERC1155_ABI, freshSigner);
+        const isApproved = await ctContract.isApprovedForAll(freshAddress, exchangeAddress);
+
+        if (!isApproved) {
+          return {
+            approved: false,
+            type: 'token',
+            tokenName: 'Conditional Token',
+            tokenAddress: CONDITIONAL_TOKENS,
+            spenderAddress: exchangeAddress
+          };
+        }
+      } catch (err) {
+        console.error('Error checking Token approval:', err);
+      }
+    }
+
+    return { approved: true };
+  };
+
+  // 执行授权
+  const executeApproval = async (approvalInfo, freshSigner) => {
+    setIsApproving(true);
+
+    try {
+      if (approvalInfo.type === 'usdt') {
+        // ERC20 授权
+        const contract = new ethers.Contract(approvalInfo.tokenAddress, ERC20_ABI, freshSigner);
+        showInfo(`正在授权 ${approvalInfo.tokenName}，请在钱包中确认...`);
+        const tx = await contract.approve(approvalInfo.spenderAddress, ethers.MaxUint256);
+        showInfo('等待交易确认...');
+        await tx.wait();
+        showSuccess(`${approvalInfo.tokenName} 授权成功！`);
+        setApprovalBanner(null);
+        return true;
+      } else if (approvalInfo.type === 'token') {
+        // ERC1155 授权
+        const contract = new ethers.Contract(approvalInfo.tokenAddress, ERC1155_ABI, freshSigner);
+        showInfo(`正在授权 ${approvalInfo.tokenName}，请在钱包中确认...`);
+        const tx = await contract.setApprovalForAll(approvalInfo.spenderAddress, true);
+        showInfo('等待交易确认...');
+        await tx.wait();
+        showSuccess(`${approvalInfo.tokenName} 授权成功！`);
+        setApprovalBanner(null);
+        return true;
+      }
+    } catch (err) {
+      console.error('Approval failed:', err);
+      if (err.code === 'ACTION_REJECTED') {
+        showError('用户取消了授权');
+      } else {
+        showError(`授权失败: ${err.message}`);
+      }
+      return false;
+    } finally {
+      setIsApproving(false);
+    }
+  };
 
   const handleTrade = async () => {
     setError('');
@@ -249,6 +370,27 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
         });
       }
 
+      // 授权检查：Buy 订单检查 USDT，Sell 订单检查 Token
+      const requiredAmount = side === 'buy' ? amounts.makerAmount : 0n;
+      const approvalCheck = await checkApprovalForTrade(side, requiredAmount, freshSigner, freshAddress);
+
+      if (!approvalCheck.approved) {
+        // 设置顶部授权提示横幅
+        const tokenLabel = approvalCheck.type === 'usdt' ? 'USDT' : 'Conditional Token';
+        setApprovalBanner({
+          type: approvalCheck.type,
+          message: `需要授权 ${tokenLabel} 才能${side === 'buy' ? '买入' : '卖出'}`,
+          approvalInfo: approvalCheck
+        });
+
+        // 自动拉起授权请求
+        const approved = await executeApproval(approvalCheck, freshSigner);
+        if (!approved) {
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
       const isNegRisk = market.isNegRisk || false;
       const typedData = builder.buildTypedData(order, { isNegRisk });
 
@@ -328,6 +470,25 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
           <h2 style={styles.title}>交易</h2>
           <button onClick={onClose} style={styles.closeBtn}>×</button>
         </div>
+
+        {/* 授权提示横幅 */}
+        {approvalBanner && (
+          <div style={styles.approvalBanner}>
+            <div style={styles.approvalBannerIcon}>🔐</div>
+            <div style={styles.approvalBannerContent}>
+              <div style={styles.approvalBannerMessage}>{approvalBanner.message}</div>
+              {isApproving && (
+                <div style={styles.approvalBannerStatus}>授权中，请在钱包中确认...</div>
+              )}
+            </div>
+            <button
+              onClick={() => setApprovalBanner(null)}
+              style={styles.approvalBannerClose}
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         <div style={styles.marketInfo}>
           <span style={styles.marketQuestion}>{market.question || market.title}</span>
@@ -524,14 +685,14 @@ const TradeModal = ({ market, isOpen, onClose, signer, jwtToken, onTradeSuccess 
           </button>
           <button
             onClick={handleTrade}
-            disabled={isSubmitting || !jwtToken || !sdkLoaded}
+            disabled={isSubmitting || isApproving || !jwtToken || !sdkLoaded}
             style={{
               ...styles.submitBtn,
               backgroundColor: side === 'buy' ? '#4caf50' : '#f44336',
-              opacity: (isSubmitting || !jwtToken || !sdkLoaded) ? 0.6 : 1
+              opacity: (isSubmitting || isApproving || !jwtToken || !sdkLoaded) ? 0.6 : 1
             }}
           >
-            {isSubmitting ? '签名中...' : `${side === 'buy' ? '买入' : '卖出'} ${getOutcomeName(outcomeIndex)}`}
+            {isApproving ? '授权中...' : isSubmitting ? '签名中...' : `${side === 'buy' ? '买入' : '卖出'} ${getOutcomeName(outcomeIndex)}`}
           </button>
         </div>
       </div>
@@ -622,6 +783,39 @@ const styles = {
     borderRadius: '8px',
     fontSize: '12px',
     fontFamily: 'monospace'
+  },
+  approvalBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    margin: '0',
+    padding: '12px 20px',
+    backgroundColor: '#fff3e0',
+    borderBottom: '1px solid #ffcc80'
+  },
+  approvalBannerIcon: {
+    fontSize: '24px'
+  },
+  approvalBannerContent: {
+    flex: 1
+  },
+  approvalBannerMessage: {
+    fontSize: '14px',
+    fontWeight: '600',
+    color: '#e65100'
+  },
+  approvalBannerStatus: {
+    fontSize: '12px',
+    color: '#ff9800',
+    marginTop: '4px'
+  },
+  approvalBannerClose: {
+    background: 'none',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+    color: '#e65100',
+    padding: '0 4px'
   },
   formGroup: {
     padding: '12px 20px'
