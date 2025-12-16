@@ -160,14 +160,17 @@ const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, 
   const side = rawOrder.side ?? orderWrapper.side ?? 0;
 
   const tokenId = rawOrder.tokenId || orderWrapper.tokenId || '';
-  let outcomeIndex;
-  if (tokenId) {
-    try {
-      outcomeIndex = BigInt(tokenId) % 2n === 0n ? 0 : 1;
-    } catch (e) {
-      outcomeIndex = 0;
+
+  // 通过比较 tokenId 与 market.outcomes 的 onChainId 来确定 outcome
+  const findOutcomeByTokenId = (marketData, tid) => {
+    if (!marketData?.outcomes || !tid) return null;
+    for (const outcome of marketData.outcomes) {
+      if (outcome.onChainId === tid) {
+        return outcome;
+      }
     }
-  }
+    return null;
+  };
 
   const {
     marketId = '',
@@ -234,17 +237,16 @@ const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, 
   const getOutcomeName = () => {
     if (outcome?.name) return outcome.name;
     if (wrapperOutcomeName) return wrapperOutcomeName;
+
+    // 通过 tokenId 与 onChainId 比较来精确确定 outcome
     // 优先使用联动的市场数据
-    if (linkedMarket?.outcomes && outcomeIndex !== undefined) {
-      return linkedMarket.outcomes[outcomeIndex] || (outcomeIndex === 0 ? 'Yes' : 'No');
+    const matchedOutcome = findOutcomeByTokenId(linkedMarket, tokenId) || findOutcomeByTokenId(market, tokenId);
+    if (matchedOutcome?.name) {
+      return matchedOutcome.name;
     }
-    if (market?.outcomes && outcomeIndex !== undefined) {
-      return market.outcomes[outcomeIndex] || (outcomeIndex === 0 ? 'Yes' : 'No');
-    }
-    if (outcomeIndex !== undefined) {
-      return outcomeIndex === 0 ? 'Yes' : 'No';
-    }
-    return isBuy ? 'Yes' : 'No';
+
+    // 如果没有找到匹配的 outcome，返回默认值
+    return 'Unknown';
   };
   const outcomeName = getOutcomeName();
 
