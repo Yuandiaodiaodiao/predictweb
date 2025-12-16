@@ -347,7 +347,8 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '6px',
-    objectFit: 'cover',
+    objectFit: 'contain',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
     flexShrink: 0
   },
   groupInfo: {
@@ -388,7 +389,8 @@ const styles = {
     width: '40px',
     height: '40px',
     borderRadius: '6px',
-    objectFit: 'cover',
+    objectFit: 'contain',
+    backgroundColor: 'var(--bg-tertiary, #21262d)',
     flexShrink: 0
   },
   marketContent: {
