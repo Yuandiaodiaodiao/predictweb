@@ -253,10 +253,11 @@ export default function Home() {
 
 const styles = {
   app: {
-    minHeight: '100vh',
+    height: '100vh',
     backgroundColor: 'var(--bg-primary, #0d1117)',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'hidden'
   },
   header: {
     display: 'flex',
@@ -265,10 +266,8 @@ const styles = {
     padding: '12px 20px',
     backgroundColor: 'var(--bg-secondary, #161b22)',
     borderBottom: '1px solid var(--border-color, #30363d)',
-    position: 'sticky',
-    top: 0,
     zIndex: 100,
-    backdropFilter: 'blur(10px)'
+    flexShrink: 0
   },
   headerLeft: {
     display: 'flex',
@@ -344,7 +343,7 @@ const styles = {
     minWidth: '360px',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    minHeight: 0
   },
   leftPanelHeader: {
     display: 'flex',

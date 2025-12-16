@@ -125,7 +125,8 @@ const styles = {
   container: {
     flex: 1,
     overflow: 'auto',
-    paddingRight: '4px'
+    paddingRight: '4px',
+    minHeight: 0
   },
   flexGrid: {
     display: 'flex',
