@@ -146,7 +146,88 @@ const MarketList = ({ markets, loading, onTrade, onSelect, selectedMarketId }) =
           groupedMarkets.map(group => {
             const isExpanded = expandedGroups[group.name];
             const hasSelectedMarket = group.markets.some(m => m.id === selectedMarketId);
+            const isSingleMarket = group.markets.length === 1;
 
+            // Single market - render directly without group wrapper
+            if (isSingleMarket) {
+              const market = group.markets[0];
+              const isSelected = selectedMarketId === market.id;
+              return (
+                <div
+                  key={market.conditionId || market.id}
+                  data-market-card
+                  onClick={() => {
+                    if (onSelect) {
+                      onSelect(market);
+                    }
+                  }}
+                  style={{
+                    ...styles.singleMarketCard,
+                    backgroundColor: isSelected
+                      ? 'rgba(88, 166, 255, 0.1)'
+                      : 'var(--bg-card, #1c2128)',
+                    borderColor: isSelected
+                      ? 'var(--accent-blue, #58a6ff)'
+                      : 'var(--border-color, #30363d)'
+                  }}
+                >
+                  {market.imageUrl && (
+                    <img
+                      src={market.imageUrl}
+                      alt=""
+                      style={styles.marketImage}
+                    />
+                  )}
+
+                  <div style={styles.marketContent}>
+                    <div style={styles.marketTitle}>
+                      {market.question || market.title}
+                      {isSelected && <span style={styles.selectedTag}>已选中</span>}
+                    </div>
+
+                    <div style={styles.outcomes}>
+                      {market.outcomes && market.outcomes.slice(0, 2).map((outcome, idx) => (
+                        <span
+                          key={idx}
+                          style={{
+                            ...styles.outcomeTag,
+                            backgroundColor: idx === 0
+                              ? 'rgba(63, 185, 80, 0.15)'
+                              : 'rgba(248, 81, 73, 0.15)',
+                            color: idx === 0
+                              ? 'var(--accent-green, #3fb950)'
+                              : 'var(--accent-red, #f85149)'
+                          }}
+                        >
+                          {outcome}
+                        </span>
+                      ))}
+                      {market.status === 'OPEN' && (
+                        <span style={styles.statusTag}>开放</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onTrade(market);
+                    }}
+                    style={{
+                      ...styles.tradeBtn,
+                      backgroundColor: isSelected
+                        ? 'var(--accent-blue, #58a6ff)'
+                        : 'var(--accent-green, #3fb950)'
+                    }}
+                  >
+                    {isSelected ? '✓' : '→'}
+                  </button>
+                </div>
+              );
+            }
+
+            // Multiple markets - render with collapsible group
             return (
               <div
                 key={group.name}
@@ -333,7 +414,21 @@ const styles = {
     borderRadius: '10px',
     border: '1px solid var(--border-color, #30363d)',
     overflow: 'hidden',
-    transition: 'border-color 0.2s'
+    transition: 'border-color 0.2s',
+    minHeight: '60px',
+    flexShrink: 0
+  },
+  singleMarketCard: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '12px',
+    borderRadius: '10px',
+    border: '1px solid var(--border-color, #30363d)',
+    cursor: 'pointer',
+    gap: '10px',
+    transition: 'all 0.2s',
+    minHeight: '60px',
+    flexShrink: 0
   },
   groupHeader: {
     display: 'flex',
