@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Orders from './Orders';
 import Positions from './Positions';
 
-const OrdersPositionsTabs = ({ jwtToken, userAddress, signer, onOrderCancelled, onViewMarket, onSelectMarket }) => {
+const OrdersPositionsTabs = ({ jwtToken, userAddress, signer, markets = [], onOrderCancelled, onViewMarket, onSelectMarket }) => {
   const [activeTab, setActiveTab] = useState('orders');
 
   return (
@@ -39,13 +39,16 @@ const OrdersPositionsTabs = ({ jwtToken, userAddress, signer, onOrderCancelled, 
           <Orders
             jwtToken={jwtToken}
             userAddress={userAddress}
+            markets={markets}
             onOrderCancelled={onOrderCancelled}
             onViewMarket={onViewMarket}
+            onSelectMarket={onSelectMarket}
           />
         ) : (
           <Positions
             jwtToken={jwtToken}
             userAddress={userAddress}
+            markets={markets}
             onSelectMarket={onSelectMarket}
             signer={signer}
           />

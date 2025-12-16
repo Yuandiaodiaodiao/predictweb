@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Orders = ({ jwtToken, userAddress, onOrderCancelled, onViewMarket }) => {
+const Orders = ({ jwtToken, userAddress, markets = [], onOrderCancelled, onViewMarket, onSelectMarket }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -138,9 +138,11 @@ const Orders = ({ jwtToken, userAddress, onOrderCancelled, onViewMarket }) => {
               <OrderCard
                 key={orderId}
                 order={order}
+                markets={markets}
                 onCancel={cancelOrder}
                 isCancelling={cancellingId === orderId}
                 onViewMarket={onViewMarket}
+                onSelectMarket={onSelectMarket}
               />
             );
           })}
@@ -150,7 +152,7 @@ const Orders = ({ jwtToken, userAddress, onOrderCancelled, onViewMarket }) => {
   );
 };
 
-const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }) => {
+const OrderCard = ({ order: orderWrapper, markets = [], onCancel, isCancelling, onViewMarket, onSelectMarket }) => {
   if (!orderWrapper) return null;
 
   const rawOrder = orderWrapper.order || orderWrapper || {};
@@ -177,6 +179,9 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
     amountFilled,
     createdAt
   } = orderWrapper || {};
+
+  // 从 markets 列表中联动查找市场信息
+  const linkedMarket = markets.find(m => m.id === marketId || m.marketId === marketId) || market;
 
   const makerAmount = rawOrder.makerAmount;
   const takerAmount = rawOrder.takerAmount;
@@ -215,6 +220,9 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
   const safeFilled = isNaN(displayFilled) ? 0 : displayFilled;
 
   const getMarketTitle = () => {
+    // 优先使用联动的市场数据
+    if (linkedMarket?.question) return linkedMarket.question;
+    if (linkedMarket?.title) return linkedMarket.title;
     if (market?.question) return market.question;
     if (market?.title) return market.title;
     if (wrapperMarketTitle) return wrapperMarketTitle;
@@ -226,6 +234,10 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
   const getOutcomeName = () => {
     if (outcome?.name) return outcome.name;
     if (wrapperOutcomeName) return wrapperOutcomeName;
+    // 优先使用联动的市场数据
+    if (linkedMarket?.outcomes && outcomeIndex !== undefined) {
+      return linkedMarket.outcomes[outcomeIndex] || (outcomeIndex === 0 ? 'Yes' : 'No');
+    }
     if (market?.outcomes && outcomeIndex !== undefined) {
       return market.outcomes[outcomeIndex] || (outcomeIndex === 0 ? 'Yes' : 'No');
     }
@@ -236,16 +248,29 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
   };
   const outcomeName = getOutcomeName();
 
-  const handleViewMarket = () => {
+  const handleSelectMarket = () => {
     const mktId = marketId || orderWrapper.marketId || market?.id;
-    if (mktId && onViewMarket) {
+    if (mktId && onSelectMarket && linkedMarket) {
+      onSelectMarket(linkedMarket);
+    } else if (mktId && onViewMarket) {
+      onViewMarket(mktId);
+    }
+  };
+
+  const handleViewMarket = (e) => {
+    e.stopPropagation();
+    const mktId = marketId || orderWrapper.marketId || market?.id;
+    if (mktId && onSelectMarket && linkedMarket) {
+      onSelectMarket(linkedMarket);
+    } else if (mktId && onViewMarket) {
       onViewMarket(mktId);
     } else if (mktId) {
       window.open(`https://predict.fun/market/${mktId}`, '_blank');
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (e) => {
+    e.stopPropagation();
     if (onCancel) {
       onCancel(orderWrapper);
     }
@@ -262,8 +287,16 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
     });
   };
 
+  const hasLinkedMarket = linkedMarket && (linkedMarket.id || linkedMarket.marketId);
+
   return (
-    <div style={styles.orderCard}>
+    <div
+      style={{
+        ...styles.orderCard,
+        cursor: hasLinkedMarket ? 'pointer' : 'default'
+      }}
+      onClick={hasLinkedMarket ? handleSelectMarket : undefined}
+    >
       <div style={styles.orderHeader}>
         <span style={{
           ...styles.sideBadge,
@@ -271,18 +304,27 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
         }}>
           {sideText}
         </span>
+        <span style={{
+          ...styles.outcomeBadge,
+          backgroundColor: outcomeName === 'Yes' ? 'rgba(63, 185, 80, 0.15)' : 'rgba(248, 81, 73, 0.15)',
+          color: outcomeName === 'Yes' ? 'var(--accent-green, #3fb950)' : 'var(--accent-red, #f85149)'
+        }}>
+          {outcomeName || '-'}
+        </span>
         <span style={styles.orderTime}>{formatDate(createdAt)}</span>
       </div>
 
       <div style={styles.orderMarket}>
-        {marketTitle && marketTitle.length > 35 ? marketTitle.slice(0, 35) + '...' : (marketTitle || '-')}
+        {marketTitle && marketTitle.length > 50 ? marketTitle.slice(0, 50) + '...' : (marketTitle || '-')}
       </div>
 
-      <div style={styles.orderDetails}>
-        <div style={styles.detailRow}>
-          <span style={styles.detailLabel}>结果</span>
-          <span style={styles.detailValue}>{outcomeName || '-'}</span>
+      {hasLinkedMarket && (
+        <div style={styles.clickHint}>
+          点击查看市场
         </div>
+      )}
+
+      <div style={styles.orderDetails}>
         <div style={styles.detailRow}>
           <span style={styles.detailLabel}>价格</span>
           <span style={styles.detailValue}>${safePrice.toFixed(3)}</span>
@@ -306,15 +348,6 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
       </div>
 
       <div style={styles.orderActions}>
-        {(marketId || orderWrapper.marketId || market?.id) && (
-          <button
-            onClick={handleViewMarket}
-            style={styles.viewMarketBtn}
-          >
-            🔗 查看市场
-          </button>
-        )}
-
         <button
           onClick={handleCancel}
           disabled={isCancelling}
@@ -323,7 +356,7 @@ const OrderCard = ({ order: orderWrapper, onCancel, isCancelling, onViewMarket }
             opacity: isCancelling ? 0.6 : 1
           }}
         >
-          {isCancelling ? '取消中...' : '❌ 取消订单'}
+          {isCancelling ? '取消中...' : '取消订单'}
         </button>
       </div>
     </div>
@@ -414,8 +447,8 @@ const styles = {
   },
   orderHeader: {
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '8px',
     marginBottom: '10px'
   },
   sideBadge: {
@@ -426,9 +459,22 @@ const styles = {
     fontWeight: '600',
     textTransform: 'uppercase'
   },
+  outcomeBadge: {
+    padding: '4px 10px',
+    borderRadius: '6px',
+    fontSize: '11px',
+    fontWeight: '600'
+  },
   orderTime: {
     fontSize: '11px',
-    color: 'var(--text-muted, #6e7681)'
+    color: 'var(--text-muted, #6e7681)',
+    marginLeft: 'auto'
+  },
+  clickHint: {
+    fontSize: '10px',
+    color: 'var(--accent-blue, #58a6ff)',
+    marginBottom: '8px',
+    opacity: 0.8
   },
   orderMarket: {
     fontSize: '13px',
@@ -469,25 +515,13 @@ const styles = {
     display: 'flex',
     gap: '8px'
   },
-  viewMarketBtn: {
-    flex: 1,
-    padding: '10px',
-    border: '1px solid var(--accent-blue, #58a6ff)',
-    borderRadius: '8px',
-    backgroundColor: 'transparent',
-    color: 'var(--accent-blue, #58a6ff)',
-    fontSize: '12px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'all 0.2s'
-  },
   cancelBtn: {
-    flex: 1,
-    padding: '10px',
-    border: 'none',
-    borderRadius: '8px',
-    backgroundColor: 'var(--accent-red, #f85149)',
-    color: '#fff',
+    width: '100%',
+    padding: '8px 12px',
+    border: '1px solid var(--accent-red, #f85149)',
+    borderRadius: '6px',
+    backgroundColor: 'transparent',
+    color: 'var(--accent-red, #f85149)',
     fontSize: '12px',
     fontWeight: '500',
     cursor: 'pointer',
