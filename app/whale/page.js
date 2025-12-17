@@ -6,16 +6,6 @@ import Link from 'next/link';
 
 const API_BASE_URL = '/api';
 
-// Fee 预设范围选项
-const FEE_PRESETS = [
-  { label: '全部', min: 0, max: Infinity },
-  { label: '0%', min: 0, max: 0 },
-  { label: '0-1%', min: 0, max: 100 },
-  { label: '1-2%', min: 100, max: 200 },
-  { label: '2-5%', min: 200, max: 500 },
-  { label: '>5%', min: 500, max: Infinity },
-];
-
 export default function WhalePage() {
   const [markets, setMarkets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +15,6 @@ export default function WhalePage() {
   // Fee 筛选状态
   const [feeMin, setFeeMin] = useState('');
   const [feeMax, setFeeMax] = useState('');
-  const [selectedPreset, setSelectedPreset] = useState(0); // 默认选中 "全部"
 
   useEffect(() => {
     fetchMarkets();
@@ -46,29 +35,6 @@ export default function WhalePage() {
       setError(err.message || '获取市场数据失败');
     } finally {
       setLoading(false);
-    }
-  };
-
-  // 处理预设点击
-  const handlePresetClick = (index) => {
-    setSelectedPreset(index);
-    const preset = FEE_PRESETS[index];
-    if (preset.min === 0 && preset.max === Infinity) {
-      setFeeMin('');
-      setFeeMax('');
-    } else {
-      setFeeMin(preset.min === 0 ? '0' : String(preset.min / 100));
-      setFeeMax(preset.max === Infinity ? '' : String(preset.max / 100));
-    }
-  };
-
-  // 处理自定义输入
-  const handleCustomFeeChange = (type, value) => {
-    setSelectedPreset(-1); // 取消预设选中
-    if (type === 'min') {
-      setFeeMin(value);
-    } else {
-      setFeeMax(value);
     }
   };
 
@@ -103,18 +69,6 @@ export default function WhalePage() {
     return result.sort((a, b) => (a.feeRateBps || 0) - (b.feeRateBps || 0));
   }, [markets, searchQuery, feeMin, feeMax]);
 
-  // 统计各 fee 区间的市场数量
-  const feeStats = useMemo(() => {
-    const stats = FEE_PRESETS.map(preset => {
-      const count = markets.filter(m => {
-        const fee = m.feeRateBps || 0;
-        return fee >= preset.min && fee <= preset.max;
-      }).length;
-      return count;
-    });
-    return stats;
-  }, [markets]);
-
   return (
     <div style={styles.app}>
       {/* Header */}
@@ -137,52 +91,40 @@ export default function WhalePage() {
           <div style={styles.filterCard}>
             <h3 style={styles.filterTitle}>Fee 费率筛选</h3>
 
-            {/* 预设按钮 */}
-            <div style={styles.presetGroup}>
-              {FEE_PRESETS.map((preset, index) => (
-                <button
-                  key={preset.label}
-                  onClick={() => handlePresetClick(index)}
-                  style={{
-                    ...styles.presetBtn,
-                    backgroundColor: selectedPreset === index
-                      ? 'var(--accent, #8B5CF6)'
-                      : 'var(--card, #FFFFFF)',
-                    color: selectedPreset === index
-                      ? 'white'
-                      : 'var(--foreground, #1E293B)'
-                  }}
-                >
-                  {preset.label}
-                  <span style={styles.presetCount}>({feeStats[index]})</span>
-                </button>
-              ))}
-            </div>
-
-            {/* 自定义范围输入 */}
-            <div style={styles.customRange}>
-              <span style={styles.customLabel}>自定义范围:</span>
+            {/* Fee 范围输入 */}
+            <div style={styles.feeRange}>
               <div style={styles.rangeInputs}>
-                <input
-                  type="number"
-                  placeholder="最小 %"
-                  value={feeMin}
-                  onChange={(e) => handleCustomFeeChange('min', e.target.value)}
-                  style={styles.rangeInput}
-                  min="0"
-                  step="0.1"
-                />
-                <span style={styles.rangeSeparator}>-</span>
-                <input
-                  type="number"
-                  placeholder="最大 %"
-                  value={feeMax}
-                  onChange={(e) => handleCustomFeeChange('max', e.target.value)}
-                  style={styles.rangeInput}
-                  min="0"
-                  step="0.1"
-                />
-                <span style={styles.rangeUnit}>%</span>
+                <div style={styles.inputGroup}>
+                  <label style={styles.inputLabel}>最小 Fee</label>
+                  <div style={styles.inputWrapper}>
+                    <input
+                      type="number"
+                      placeholder="0"
+                      value={feeMin}
+                      onChange={(e) => setFeeMin(e.target.value)}
+                      style={styles.rangeInput}
+                      min="0"
+                      step="0.1"
+                    />
+                    <span style={styles.inputUnit}>%</span>
+                  </div>
+                </div>
+                <span style={styles.rangeSeparator}>~</span>
+                <div style={styles.inputGroup}>
+                  <label style={styles.inputLabel}>最大 Fee</label>
+                  <div style={styles.inputWrapper}>
+                    <input
+                      type="number"
+                      placeholder="不限"
+                      value={feeMax}
+                      onChange={(e) => setFeeMax(e.target.value)}
+                      style={styles.rangeInput}
+                      min="0"
+                      step="0.1"
+                    />
+                    <span style={styles.inputUnit}>%</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -411,49 +353,34 @@ const styles = {
     alignItems: 'center',
     gap: '8px'
   },
-  presetGroup: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '8px',
+  feeRange: {
     marginBottom: '20px'
-  },
-  presetBtn: {
-    padding: '8px 14px',
-    fontSize: '12px',
-    fontWeight: '700',
-    borderRadius: '9999px',
-    border: '2px solid var(--foreground, #1E293B)',
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    boxShadow: '2px 2px 0 0 var(--foreground, #1E293B)'
-  },
-  presetCount: {
-    fontSize: '10px',
-    opacity: 0.8
-  },
-  customRange: {
-    marginBottom: '20px'
-  },
-  customLabel: {
-    display: 'block',
-    fontSize: '12px',
-    fontWeight: '700',
-    color: 'var(--muted-foreground, #64748B)',
-    marginBottom: '10px',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px'
   },
   rangeInputs: {
     display: 'flex',
-    alignItems: 'center',
-    gap: '8px'
+    alignItems: 'flex-end',
+    gap: '12px'
+  },
+  inputGroup: {
+    flex: 1
+  },
+  inputLabel: {
+    display: 'block',
+    fontSize: '11px',
+    fontWeight: '700',
+    color: 'var(--muted-foreground, #64748B)',
+    marginBottom: '6px',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px'
+  },
+  inputWrapper: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center'
   },
   rangeInput: {
-    flex: 1,
-    padding: '10px 12px',
+    width: '100%',
+    padding: '12px 36px 12px 14px',
     fontSize: '14px',
     fontWeight: '600',
     backgroundColor: 'var(--muted, #F1F5F9)',
@@ -461,17 +388,21 @@ const styles = {
     borderRadius: '12px',
     outline: 'none',
     transition: 'all 0.2s',
-    fontFamily: 'var(--font-mono, monospace)'
+    fontFamily: 'var(--font-mono, monospace)',
+    boxSizing: 'border-box'
   },
-  rangeSeparator: {
-    fontSize: '16px',
+  inputUnit: {
+    position: 'absolute',
+    right: '12px',
+    fontSize: '13px',
     fontWeight: '700',
     color: 'var(--muted-foreground, #64748B)'
   },
-  rangeUnit: {
-    fontSize: '14px',
+  rangeSeparator: {
+    fontSize: '18px',
     fontWeight: '700',
-    color: 'var(--foreground, #1E293B)'
+    color: 'var(--muted-foreground, #64748B)',
+    paddingBottom: '10px'
   },
   searchWrapper: {
     position: 'relative'
