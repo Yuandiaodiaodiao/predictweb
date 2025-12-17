@@ -74,6 +74,63 @@
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ========== Dark Mode ========== */
+[data-theme="dark"] {
+  /* Main Colors - Dark Mode */
+  --background: #0F172A;           /* Slate 900 */
+  --foreground: #F1F5F9;           /* Slate 100 */
+  --muted: #1E293B;                /* Slate 800 */
+  --muted-foreground: #94A3B8;     /* Slate 400 */
+
+  /* Accent Colors - Slightly adjusted for dark mode */
+  --accent: #A78BFA;               /* Violet 400 */
+  --accent-foreground: #0F172A;
+  --secondary: #F9A8D4;            /* Pink 300 */
+  --tertiary: #FCD34D;             /* Amber 300 */
+  --quaternary: #6EE7B7;           /* Emerald 300 */
+
+  /* Semantic Colors */
+  --accent-green: #6EE7B7;
+  --accent-red: #FCA5A5;
+  --accent-orange: #FDBA74;
+  --accent-blue: #93C5FD;
+  --accent-purple: #A78BFA;
+
+  /* UI Colors */
+  --border: #334155;               /* Slate 700 */
+  --input: #1E293B;
+  --card: #1E293B;
+  --ring: #A78BFA;
+
+  /* Legacy mappings for compatibility */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --bg-card: #1E293B;
+  --bg-hover: #334155;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --border-color: #334155;
+
+  /* Shadows - Adjusted for dark mode */
+  --shadow-pop: 4px 4px 0px 0px #0F172A;
+  --shadow-pop-hover: 6px 6px 0px 0px #0F172A;
+  --shadow-pop-active: 2px 2px 0px 0px #0F172A;
+  --shadow-pop-sm: 3px 3px 0px 0px #0F172A;
+  --shadow-card: 6px 6px 0px 0px #334155;
+  --shadow-card-colored: 6px 6px 0px 0px #A78BFA;
+  --shadow-sm: 2px 2px 0px 0px rgba(241, 245, 249, 0.1);
+  --shadow-md: 4px 4px 0px 0px rgba(241, 245, 249, 0.15);
+  --shadow-lg: 6px 6px 0px 0px rgba(241, 245, 249, 0.2);
+  --shadow-glow: 0 0 20px rgba(167, 139, 250, 0.4);
+}
+
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(circle at 2px 2px, rgba(167, 139, 250, 0.12) 1px, transparent 0);
+}
+
 /* ========== Global Reset ========== */
 * {
   margin: 0;

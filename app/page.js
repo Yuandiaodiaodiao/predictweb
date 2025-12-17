@@ -8,6 +8,7 @@ import OrderBook from './components/OrderBook';
 import TradePanel from './components/TradePanel';
 import OrdersPositionsTabs from './components/OrdersPositionsTabs';
 import ApprovalDropdown from './components/ApprovalDropdown';
+import ThemeToggle from './components/ThemeToggle';
 import { ToastProvider } from './components/Toast';
 
 const API_BASE_URL = '/api';
@@ -161,6 +162,7 @@ export default function Home() {
             <h1 style={styles.logo}>Predict.fun Trading</h1>
           </div>
           <div style={styles.headerRight}>
+            <ThemeToggle />
             {accountInfo && (
               <div style={styles.accountInfo}>
                 {accountInfo.name && (
